@@ -1,0 +1,441 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper]{geometry}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\usepackage{ctex}
+\usepackage{amsmath,amsfonts,graphicx,subfigure,amssymb,bm,amsthm}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\usepackage{breqn}
+\usepackage{fontsize}
+\usepackage{tikz,xcolor}
+
+\setmainfont{Palatino Linotype}
+\setCJKmainfont{SimHei}
+\setCJKsansfont{Songti}
+\setCJKmonofont{SimSun}
+\punctstyle{kaiming}
+
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+
+%改这里可以修改实验报告表头的信息
+\newcommand{\experiName}{虚拟仪器在物理实验中的应用}
+\newcommand{\supervisor}{李贞杰}
+\newcommand{\name}{王致力}
+\newcommand{\studentNum}{2021K8009908004}
+\newcommand{\class}{3}
+\newcommand{\group}{03}
+\newcommand{\seat}{10}
+\newcommand{\dateYear}{2022}
+\newcommand{\dateMonth}{10}
+\newcommand{\dateDay}{26}
+\newcommand{\room}{702}
+\newcommand{\others}{$\square$}
+%% 如果是调课、补课, 改为: $\square$\hspace{-1em}$\surd$
+%% 否则, 请用: $\square$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%若需在页眉部分加入内容, 可以在这里输入
+% \pagestyle{fancy}
+% \lhead{\kaishu 测试}
+% \chead{}
+% \rhead{}
+
+\begin{center}
+    \LARGE \bf 《\, 基\, 础\, 物\, 理\, 实\, 验\, 》\, 实\, 验\, 报\, 告
+\end{center}
+
+\begin{center}
+    \noindent \emph{实验名称}\underline{\makebox[25em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[8em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}}%%如果名字比较长, 可以修改box的长度"5em"
+    \emph{学号}\underline{\makebox[10em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} （\emph{例}:\, 1\,-\,04\,-\,5\emph{号}）\\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}}\emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{\others\ 是}}
+    \emph{成绩评定} \underline{\hspace{5em}}
+    {\noindent}
+    \rule[8pt]{17cm}{0.2em}
+\end{center}
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 了解虚拟仪器的概念；
+    \item 了解图形化编程语言LabVIEW，学习简单的LabVIEW编程；
+    \item 了解伏安法测电阻的虚拟仪器实现方案，并搭建实际电路测量元件的伏安特性曲线。
+\end{enumerate}
+
+\section{实验器材}
+
+计算机（Windows 7操作系统），LabVIEW 2014，NI ELVIS II$ ^+ $，导线若干，元件盒一个（包括$ 100\,\Omega $标准电阻一个，待测电阻$ 1\,\mathrm{k\Omega} $和$ 51\,\Omega $各一个，稳压二极管一个）。
+
+\section{实验原理}
+
+\subsection{虚拟仪器的硬件}
+本实验使用的硬件平台为个人电脑、美国国家仪器公司（National Instruments）的教学实验室虚拟仪器套件为NI ELVIS II$ ^+ $与其自带的原型板。
+
+\subsection{虚拟仪器的软件}
+本实验采用LabVIEW作为用于虚拟仪器系统设计的软件开发平台。LabVIEW将计算机数据分析和显示能力与仪器驱动程序整合在一起，为针对仪器的编程提供了许多便利。同时，与其他常见的计算机高级语言相比，LabVIEW具有图形化的特点，这一点将编程过程简化为设计流程图，实验者即便没有计算机基础，也能在很短时间内的学习中掌握LabVIEW编程的基本操作与初级技巧。
+
+用LabVIEW进行编程的集成开发环境简称VI，其包括三个部分：前面板、程序框图和图标/连线板。
+
+前面板用于设置输入数值与显示输出量，相当于真实仪表的前面板，类比到常见的计算机软件中即为GUI部分（Graphical User Interface，图形用户界面）。前面板上的图标分为输入类（Controls）和显示类（Indicators），具体而言可以是开关、旋钮、图形、图表等表现形式。
+
+程序框图则相当于仪器的内部功能结构，类似常见计算机软件中的后台进程。程序框图中的端口用于和前面板的输入对象和显示对象传递数据，节点用于实现函数与功能子程序调用，图框用于实现结构化程序控制命令，连线则代表程序执行过程中的数据流。
+
+\subsection{利用虚拟仪器测量伏安特性}
+本实验采用伏阻法测量电路的伏安特性曲线，利用可变压电源、两个电压表和一个定值电阻进行测量。测量电路如下图所示：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{0-1.png}
+    \caption{用虚拟仪器测量伏安特性原理图}
+\end{figure}
+
+设路端电压为$U_0$，定值电阻电阻为$R_0$，两端电压为$U_1$。由串联电路的分压原理可以得到待测电阻上的电压，对标准电阻根据欧姆定律可以得到串联电路中的电流$ I $。由欧姆定律即，可求得待测电阻的阻值：
+
+\[R=\frac{U_0-U_1}{U_1}R_0\]
+
+具体连线方式将在实验内容部分讨论。
+
+\section{实验内容}
+
+\subsection{初步熟悉LabVIEW开发环境的基本操作和编程方法}
+启动LabVIEW2014之后，在左上角“文件”下拉菜单中点击“新建VI”即可得到新项目的前面板。在上方菜单栏点击“窗口-显示程序框图”即可得到新项目的程序框图，可以用分屏功能将两者放在屏幕左半边和右半边。在前面板点击右键会弹出控件选板，在程序框图点击右键会弹出函数选板。在这两个选板界面点击相应控件或者函数，可以把相应控件或函数拖拽到窗口的相应位置，而插入控件后程序框图中也会显示这一控件的图标。经过一定自由探索，不难掌握标签工具、定位工具、连线工具、快捷键等其他功能。
+
+\subsection{创建一个模拟温度测量程序}
+该温度测量程序可以实现“摄氏”和“华氏”两种模式，同时在前面版中用温度计图标进行图形化显示。
+
+一种方案不利用实际的温度传感器，温度由使用者自行设定，具体实验步骤如下：
+
+\begin{enumerate}
+    \item 新建VI项目，在前面板中，放入温度计、垂直滑动杆开关、数值显示控件、数值输入控件，并利用标签工具修改其名称以表示所需的含义。
+    \item 在程序框图中，在函数选板中找到乘法、减法、除法、比较函数，将其与相应的图标通过连线工具连接起来，并在需要的地方创建数值常量。整个程序创建完毕后，最后整理图标位置与连线，使得程序框图更为美观。
+    \item 运行程序：选择前面板窗口，点击连续运行按钮，改变“采集的电压”控件输入值和温度值单位，观察程序运行情况。再次点击连续运行按钮即可停止程序运行。
+    \item 保存该VI项目，关闭程序。
+\end{enumerate}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.92\textwidth]{2-0.png}
+    \caption{不使用温度传感器的模拟温度测量程序}
+\end{figure}
+
+在程序运行时，“采集的电压”在$0.5-2$之间取值。当开关接到“华氏度”模式时，测到的电压乘以$100$即得温度计示数；当开关接到“摄氏度”时，测到的电压先乘以$100$转换为华氏度，然后先减$32$再除以$1.8
+$得到摄氏度。
+
+另一种测量装置使用了热电偶作为实际的温度传感器。在电路中我们将它接在开发板的"AI0"正负两端，在程序中我们使用DAQ助手取代上图中的“采集的电压$\times100$”，具体实现方法参见讲义。前面板和程序框图如图所示：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.92\textwidth]{2-4.png}
+    \caption{使用热电偶作为温度传感器的模拟温度测量程序}
+\end{figure}
+
+注意到热电偶的读数不稳定，跳动很大，而且开发板AI0接口和热电偶引脚接触不紧密时读书容易变得非常大，我们需要手动将引脚接紧，方便得到相对正常的读数。
+
+\subsection{创建一个电压输出和采集的程序}
+我们用开发板的AO0端口将程序设定的电压输出，再将上面输出的电压用导线接到开发板的AI0端读取，并用程序处理和输出。前面板和程序框图如图所示：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3-1-1.png}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3-1-2.png}
+    \caption{电压输出和采集程序}
+\end{figure}
+
+实验步骤如下：
+
+\begin{enumerate}
+    \item 新建VI项目。
+    \item 编写电压输出程序。在程序框图中创建虚拟通道，将其类型设置为模拟输出电压。将“DAQmx开始任务”“DAQmx写入”和“DAQmx清除任务”三个节点放入程序框图并将其连接，在“DAQmx写入”的图标数据输入端创建输入控件。创建一个While循环结构，使得每等待100\,ms执行一次循环结构内部分，直至在前面板按下停止按钮。
+    \item 编写电压采集程序。在程序框图中创建虚拟通道，将其类型设置为模拟输入电压。以类似的方式构建任务链与While循环，不同之处在于此处不采用“DAQmx写入”控件而是“DAQmx读取”控件，其连接输出控件而非输入控件。
+    \item 通过USB线连接PC与原型板，打开ELVIS电源与原型板电源，在前面板上设置输出通道为Dev5/ao0（本套原型板在电脑上显示为Dev5），输入通道为Dev5/ai0。在原型板上用原型板连接模拟输出的“AO 0”端和模拟输入的“AI $ 0+ $”端，将“AI $ 0- $”端与接地端“AIGND”用导线连接。在前面板窗口运行VI程序，不断改变输出电压，观察测量电压是否与输出电压一致，也可点击停止按钮观察程序运行情况。
+    \item 停止程序运行，保存VI项目，关闭程序。
+\end{enumerate}
+
+在程序运行过程中，如果不点击“停止输出”或“停止测量”，则任意设定输出电压值，在和设定完成几乎同时的情况下，测量电压发生改变且恒等于输出电压。如果点击“停止输出”或“停止测量”，此时无论输出电压如何改变，测量电压都维持在结束前的值不改变。此时需要把“停止输出”和“停止测量”都点一遍，输出值和读取值才能做到同步。
+
+\subsection{用虚拟仪器测量伏安特性}
+这是本次实验中最复杂的一个。实验步骤如下：
+\begin{enumerate}
+    \item 创建前面板。在前面板上放上Express XY图用于显示电压-电流图。放入四个数值型输入控件，分别用于输入“输出电压步长”、“测量数据点数”、“标准电阻”、“时间间隔”四个参数，并规定时间间隔与输入电压步长的单位。放入一个数值型显示控件用于显示电阻测量值，放入一个二维数组显示控件用于显示测量的电压和电流。最后放入一个开关用于控制程序进程。
+    \item 创建程序框图。放入一个5帧的顺序结构，第0帧用于让ELVIS输出电压，第1帧让程序等待100\,ms至电路稳定，第2帧用于让ELVIS采集总电压与标准电阻上的电压，第3帧再次让程序等待100\,ms以减少对数据测量过程的影响，第4帧令顺序结构结束时电压输出为0。这样的顺序结构实现了测量一次的过程，为了不断改变输出电压值来测量电阻的值，还需加入一个While循环结构，使得While循环及其中的顺序结构在执行次数i不大于测量数据点数时循环执行。为了实现数据的实时显示，我们使用两个移位寄存器，以在相邻两次循环之间传递数据。通过一个“创建数组”来显示测量数据，将电压、电流数组分别与“创建XY图”的X、Y输入相连。为求得电阻值，需在循环外放入一个“线性拟合”节点，将移位寄存器传递出来的电流、电压数组与“线性拟合”的X、Y输入端相连，将其“斜率”输出端与“待测电阻值”显示控件相连，用于显示电阻值。
+    \item 正确连接外部电路，根据实验原理部分中给出的原理电路图与上一步DAQ助手设置的输入输出端口，在原型板上连接实验电路。
+    \item 在前面板上设置各参数，在电路中依次插入两个电阻和一个二极管，将测得数据导出为excel文件，绘制三种元件的伏安特性曲线。
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{4-3.png}
+    \caption{测量伏安特性曲线程序的前面板部分}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{4-4.png}
+    \caption{测量伏安特性曲线程序的程序框图部分}
+\end{figure}
+
+在连接电路时，路端电压由AO1提供，即电流从AO1流出，最后流入GROUND。电压的测量需要用到两个模拟输入端口：AI0的正负极接在电路正负极之间，测量路端电压；AI1的正负极接在定值电阻两端，测量定值电阻的电压。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{4-5-1.jpg}
+    \caption{测量伏安特性曲线实验所用电路示意图}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{4-5-3.jpg}
+    \caption{测量伏安特性曲线实验所用实际电路图（以接入电阻为例，接入二极管同理）}
+\end{figure}
+
+%\pagebreak
+
+\section{数据及数据处理}
+
+\subsection{电阻的伏安特性曲线}
+实验中要求使用$1\,\mathrm{k}\Omega$和$51\,\Omega$的电阻，然而我所在的桌上并没有$1\,\mathrm{k}\Omega$的电阻，故我只能用其他电阻代替。用万用表大致测量可得，电阻1的阻值约为$51.2\,\Omega$，电阻2的阻值约为$1492\,\Omega$。
+
+\subsubsection{电阻1的伏安特性曲线}
+将电阻1接入电路，得到如下表格：
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    电压(V) & 电流(A) \\
+        \hline
+        -0.000644323 & -1.61E-05 \\
+        \hline
+        0.0328605 & 0.000644284 \\
+        \hline
+        0.0660431 & 0.00130149 \\
+        \hline
+        0.0995479 & 0.00196192 \\
+        \hline
+        0.133697 & 0.00261591 \\
+        \hline
+        0.16688 & 0.00327312 \\
+        \hline
+        0.200385 & 0.00392711 \\
+        \hline
+        0.234856 & 0.0045811 \\
+        \hline
+        0.267394 & 0.00524797 \\
+        \hline
+        0.300899 & 0.00590196 \\
+        \hline
+        0.334082 & 0.00655917 \\
+        \hline
+        0.367909 & 0.00721638 \\
+        \hline
+        0.401736 & 0.00787037 \\
+        \hline
+        0.434275 & 0.0085308 \\
+        \hline
+        0.468102 & 0.00918801 \\
+        \hline
+        0.501607 & 0.009842 \\
+        \hline
+    \end{tabular}%
+    \caption{电阻1的伏安特性数据记录表}
+\end{table}%
+
+用Excel绘制散点图，将数据列添加趋势线，对散点进行线性拟合，得到电阻1的$I-U$图线（伏安特性曲线）：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{5-1.png}
+    \caption{电阻1的伏安特性曲线}
+\end{figure}
+
+根据线性元件的欧姆定律，$I-U$图线的斜率$k=\frac{1}{R}=0.0196\,\Omega^{-1}$，故$R=51.02\,\Omega$。而虚拟实验面板的读数为$50.96\,\Omega$，两者在误差允许范围内相等。
+
+\subsubsection{电阻1的伏安特性曲线}
+将电阻2接入电路，得到如下表格：
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        电压(V) & 电流(A) \\
+        \hline
+        -0.00128865 & -6.48E-06 \\
+        \hline
+        0.0927825 & 5.47E-05 \\
+        \hline
+        0.186209 & 0.0001192 \\
+        \hline
+        0.279636 & 0.0001836 \\
+        \hline
+        0.372741 & 0.000248 \\
+        \hline
+        0.466812 & 0.0003125 \\
+        \hline
+        0.559917 & 0.0003769 \\
+        \hline
+        0.653666 & 0.0004349 \\
+        \hline
+        0.748381 & 0.0004961 \\
+        \hline
+        0.840842 & 0.0005637 \\
+        \hline
+        0.935235 & 0.000625 \\
+        \hline
+        1.02834 & 0.0006862 \\
+        \hline
+        1.12306 & 0.0007474 \\
+        \hline
+        1.21584 & 0.0008086 \\
+        \hline
+        1.30991 & 0.000873 \\
+        \hline
+        1.40334 & 0.0009342 \\
+        \hline
+    \end{tabular}%
+    \caption{电阻2的伏安特性数据记录表}
+  \end{table}%
+
+用Excel绘制散点图，将数据列添加趋势线，对散点进行线性拟合，得到电阻2的$I-U$图线（伏安特性曲线）：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{5-2.png}
+    \caption{电阻2的伏安特性曲线}
+\end{figure}
+
+根据线性元件的欧姆定律，$I-U$图线的斜率$k=\frac{1}{R}=0.0007\,\Omega^{-1}$。由于有效数字位数过低，我们直接利用虚拟实验仪器面板的读数$R=1492.66\,\Omega$。由于$k\cdot R\sim 1.0$，故虚拟仪器的读数可信。
+
+\subsubsection{二极管的伏安特性曲线}
+将稳压二极管接入电路，得到如下表格：
+
+用Excel绘制散点图，将数据列添加趋势线，对散点进行线性拟合，得到二极管的$I-U$图线（伏安特性曲线）：
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        电压(V) & 电流(A) \\
+        \hline
+        -1.49934 & -6.48E-06 \\
+        \hline
+        -1.39883 & -6.48E-06 \\
+        \hline
+        -1.29831 & -6.48E-06 \\
+        \hline
+        -1.19844 & -6.48E-06 \\
+        \hline
+        -1.09889 & -6.48E-06 \\
+        \hline
+        -0.998057 & -3.26E-06 \\
+        \hline
+        -0.899475 & -9.70E-06 \\
+        \hline
+        -0.799927 & -9.70E-06 \\
+        \hline
+        -0.699091 & -9.70E-06 \\
+        \hline
+        -0.597932 & -3.26E-06 \\
+        \hline
+        -0.499028 & -6.48E-06 \\
+        \hline
+        -0.39948 & -1.29E-05 \\
+        \hline
+        -0.298966 & -6.48E-06 \\
+        \hline
+        -0.198451 & -3.26E-06 \\
+        \hline
+        -0.0995479 & -9.70E-06 \\
+        \hline
+    \end{tabular}%
+    \qquad
+    \begin{tabular}{|c|c|}
+        \hline
+        电压(V) & 电流(A) \\
+        \hline
+        0.0989035 & -6.48E-06 \\
+        \hline
+        0.199096 & -6.48E-06 \\
+        \hline
+        0.297999 & -3.88E-08 \\
+        \hline
+        0.397225 & 9.63E-06 \\
+        \hline
+        0.488397 & 9.98E-05 \\
+        \hline
+        0.555406 & 0.0004155 \\
+        \hline
+        0.597288 & 0.0009987 \\
+        \hline
+        0.624994 & 0.0017139 \\
+        \hline
+        0.644646 & 0.0025096 \\
+        \hline
+        0.658499 & 0.0033633 \\
+        \hline
+        0.668486 & 0.0042396 \\
+        \hline
+        0.679117 & 0.005132 \\
+        \hline
+        0.688138 & 0.0060341 \\
+        \hline
+        0.69426 & 0.0069587 \\
+        \hline
+        0.699737 & 0.0078833 \\
+        \hline
+    \end{tabular}%
+    \caption{二极管的伏安特性数据记录表。左侧为加反向电压时的情况，右侧为加正向电压时的情况。}
+\end{table}%
+
+用Excel绘制散点图并用光滑曲线连接，得到二极管的$I-U$图线（伏安特性曲线）：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{5-3.png}
+    \caption{二极管的伏安特性曲线}
+\end{figure}
+
+该图像正确地反映了二极管的理论伏安特性曲线特点：具有单向导通性，加反向电压时电阻非常大；加正向电压时二极管大约在$0.5V$时导通，此后电阻迅速减小。
+
+\section{思考题}
+\begin{enumerate}
+    \item 虚拟仪器系统与传统仪器有什么区别？请简要说明。
+    
+    {\kaishu 虚拟仪器在以 PC 为核心组成的硬件平台支持下，通过软件编程来实现仪器的功能，虽然一般也需要搭建实际电路，但电压输出和读取、简单数据处理等功能都是可以用软件进行操作的。而传统仪器为实物仪器，测量和处理数据需手动操作。传统仪器在实验时常常会因读数不便、调整不变、自动化程度低、过于依赖人工等因素给实验者带来许多苦恼与压力，而虚拟仪器和LabVIEW软件的灵活高效解决了这些问题，同时提供了高精度、高效率等优点。}
+    \item 本实验内容 3 中的电压输出和采集哪个先执行？
+    
+    {\kaishu 先执行电压输出，在输出后还需等待 100ms 再进行电压采集，这是为了使信号稳定。}
+\end{enumerate}
+
+\section{实验感想}
+本实验使用的 LabVIEW 由前面板和程序框图组成，采用图形化编程的思想，和小学时使用的Scratch软件具有一定的相似性，直观而且简便。作为一名计算机系的学生，我虽然对于LabVIEW的各种功能了解非常有限，不过还是可以从这次实验中感受到这一技术的趣味性，也对于实验所用的原型板、图形化编程背后的接口等产生了一定的兴趣。
+
+虚拟仪器使得本实验的数据采集和实验非常简便，数组中的数据甚至可以直接导出为Excel，省去了很多数据输入和数据处理的工作，且自带线性拟合功能，可以直接从界面上读取电阻的数值。同时收集的数据也非常精确，测量的电压和电流值有效数字位数非常多，在两个电阻伏安特性曲线的线性拟合中，拟合结果的$R^2$都至少为$0.9999$。这和传统实验相比的优势是非常明显的。比如上次的磁滞回线实验需要测量的数据点估计有50个左右，都需要用光标手动读取电压值。但电压只是一个中间变量，我们需要将其转换为$H$和$B$，然而示波器却没有对于数据进行自由四则运算的功能，导致看到图像后不能像本次实验一样的到磁滞回线图像，还需要测量图像上的点的坐标，之后所有电压测量值全部需要手动转换为$H$和$B$，最后还需要重新绘制图像，非常不方便，又费时又费力。虚拟仪器的优势可见一斑。
+
+但虚拟仪器也有自身的缺陷，比如编程复杂，不仅需要搭建电路，还需要实现复杂的程序控制功能，尤其是数据采集、存储、回归分析和输出的程序非常复杂。相比之下传统的伏安特性曲线测量装置虽然功能简陋、不能自动控制，但是搭建过程非常简单，大约两三分钟就可以。此外实验装置的成本也显著变高了，现在的单片机（比如Arduino，STM32，Raspberry Pi）都很贵，网上没有查到NI ELVIS II$ ^+ $套件的具体价格，但由于这个比上述单片机都更加专业，显然价格会更高。
+
+不过这次实验完全不顺利，尤其是在进行第四个实验时，由于讲义上很多细节没有写清楚（比如怎么加移位寄存器，怎么给寄存器连线），我又一次最后一个走，而且做到了6点，比上次磁滞回线都晚。不过还是很感谢指导老师等了我很久，帮我重新搭建了电路，修好了实验4中遇到的bug。
+
+此外需要注意的是，由于电路采用串联的方式，故不可以在实验4中使用太大的电阻，尽量按照$1\,\mathrm{k}\Omega$和$51\,\Omega$的标准来，否则电压几乎全部集中在待测电阻上，测出的结果不准。
+
+最后，本篇实验报告全部用\LaTeX{}编写，虽然费时费力，但也很大程度上锻炼了我的\LaTeX{}使用水平。这里也感谢21级计算机系的吉骏雄同学和21级人工智能系的林诚皓同学提供了实验报告抬头的模板。
+\end{document}

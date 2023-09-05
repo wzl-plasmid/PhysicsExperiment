@@ -1,0 +1,775 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                     %
+%   %    %   %  %   %%%%%    %  %  %  %
+%  %%   %%   %  %   %       %%  %  %  %
+%   %    %   %%%%%  %%%%%    %  %%%%% %
+%   %    %      %       %    %     %  %
+%  %%%  %%%     %   %%%%%   %%%    %  %
+%                                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%本实验报告由本人林诚皓和吉俊雄一起完成, 旨在方便LATEX原教旨主义者写实验报告, 避免Word文档因插入过多图造成卡顿. 
+
+\documentclass[12pt]{article}
+
+\usepackage[a4paper]{geometry}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\usepackage{ctex}
+\usepackage{amsmath,amsfonts,graphicx,subfigure,amssymb,bm,amsthm}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\usepackage{breqn}
+\usepackage{fontsize}
+\usepackage{tikz,xcolor}
+\usepackage{siunitx}
+\usepackage{upgreek}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{booktabs}
+
+\setmainfont{Palatino Linotype}
+\setCJKmainfont{SimHei}
+\setCJKsansfont{Songti}
+\setCJKmonofont{SimSun}
+\punctstyle{kaiming}
+\hypersetup{hidelinks}
+
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+
+%改这里可以修改实验报告表头的信息
+\newcommand{\experiName}{观测铁磁材料的磁滞回线}
+\newcommand{\supervisor}{赵晓娟}
+\newcommand{\name}{王致力}
+\newcommand{\studentNum}{2021K8009908004}
+\newcommand{\class}{3}
+\newcommand{\group}{03}
+\newcommand{\seat}{10}
+\newcommand{\dateYear}{2022}
+\newcommand{\dateMonth}{10}
+\newcommand{\dateDay}{19}
+\newcommand{\room}{713}
+\newcommand{\others}{$\square$}
+%% 如果是调课、补课, 改为: $\square$\hspace{-1em}$\surd$
+%% 否则, 请用: $\square$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%若需在页眉部分加入内容, 可以在这里输入
+% \pagestyle{fancy}
+% \lhead{\kaishu 测试}
+% \chead{}
+% \rhead{}
+
+\begin{center}
+    \LARGE \bf 《\, 基\, 础\, 物\, 理\, 实\, 验\, 》\, 实\, 验\, 报\, 告
+\end{center}
+
+\begin{center}
+    \noindent \emph{实验名称}\underline{\makebox[25em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[8em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}}%%如果名字比较长, 可以修改box的长度"5em"
+    \emph{学号}\underline{\makebox[10em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} （\emph{例}:\, 1\,-\,04\,-\,5\emph{号}）\\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}}\emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{\others\ 是}}
+    \emph{成绩评定} \underline{\hspace{5em}}
+    {\noindent}
+    \rule[8pt]{17cm}{0.2em}
+\end{center}
+
+\section{实验目的}
+
+\begin{itemize}
+    \item 掌握磁滞回线、磁化曲线等知识点，并了解其中饱和磁化强度、剩余磁化强度、矫顽力等概念；
+    \item 了解铁磁性材料的动态磁化特性；
+    \item 掌握磁滞回线、磁化曲线的测量方法，比如利用示波器测量铁磁材料动态磁滞回线，利用霍尔传感器测量铁磁材料（准）静态磁滞回线。
+\end{itemize}
+
+\section{实验器材}
+
+\begin{enumerate}
+    \item DH4516磁特性综合测量实验仪（包括正弦波信号源，待测样品及绕组，积分电路所用的电阻和电容）。双踪示波器，直流电源，电感，数字多用表。
+    
+    磁特性综合测量实验仪主要技术指标如下：
+
+    \begin{enumerate}
+        \item 样品1：锰锌铁氧体，圆形罗兰环，磁滞损耗较小。平均磁路长度$ l=0.130\,\mathrm{m} $，铁芯实验样品截面积$ S=1.24\times10^{-4}\,\mathrm{m}^2 $，线圈匝数：$ N_1=N_2=N_3=150\,\text{匝} $。
+        \item 样品2：EI型硅钢片，磁滞损耗较大。平均磁路长度$ l=0.075\,\mathrm m $，铁芯实验样品截面积$ S=1.20\times10^{-4}\,\mathrm m^2 $，线圈匝数：$ N_1=N_2=N_3=150\,\text{匝} $。
+        \item 信号源的频率在$ 20\sim 200\,\mathrm{Hz} $间可调；可调标准电阻$ R_1,R_2 $均为无感交流电阻，$ R_1 $的调节范围为$ 0.1\sim 11\,\Omega $，$ R_2 $的调节范围为$ 1\sim 100\,\mathrm k\Omega $；标准电容有$ 0.1\,\upmu\mathrm F\sim 11\upmu\mathrm F $可选。
+    \end{enumerate}
+
+    \item FD-BH-I磁性材料磁滞回线和磁化曲线测定仪（包括数字式特斯拉计、恒流源、磁性材料样品、磁化线圈、双刀双掷开关、霍耳探头移动架、双叉头连接线、箱式实验平台）。
+    
+    其主要技术指标如下：
+
+    \begin{enumerate}
+        \item 数字式特斯拉计：四位半 LED 显示，量程 $2.000\,\mathrm{T}$；分辨率 $0.1\,\mathrm{mT}$；带霍耳探头。
+        \item 恒流源：四位半 LED 显示，可调恒定电流 $0-600.0\,\mathrm{mA}$。
+        \item 磁性材料样品：条状矩形结构，截面长 $2.00\,\mathrm{cm}$；宽 $2.00\,\mathrm{cm}$；隔隙 $2.00\,\mathrm{mm}$；平均磁路长度$l=0.240\,\mathrm{m}$（样品与固定螺丝为同种材料）。
+        \item 磁化线圈总匝数 $\mathrm{N}=2000$。
+    \end{enumerate}
+\end{enumerate}
+
+\section{实验原理}
+\subsection{铁磁材料的磁化特性}
+把物体放在外磁场$ H $中，物体就会被磁化，在其内部产生磁场。设其内部磁化强度为$ M $，磁感应强度为$ B $，可以定义磁化率$ \chi_m $和相对磁导率$ \mu_r $表示物质被磁化的难易程度：
+\[\chi_m=\frac MH,\quad \mu_r=\frac{B}{\mu_0 H}\]
+其中$ \mu_0=4\pi\times10^{-7}\,\mathrm{N/A^2} $称为真空磁导率。又由于$ B=\mu_0(M+H) $，我们有$ \mu_r=1+\chi_m $。物质的磁性按磁化率可分为抗磁性、顺磁性和铁磁性三种，本次实验主要研究铁磁性物质，其磁化率通常大于1，远大于前两类物质。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{3-1.png}
+    \caption{铁磁材料的起始磁化曲线和饱和磁滞回线示意图}
+    \label{fig:1}
+\end{figure}
+
+除磁导率高外，铁磁材料还具有特殊的磁化规律。对一个处于磁中性状态$ (H=0,\,B=0) $的铁磁材料加上由小变大的磁场$ H $进行磁化时，磁感应强度$ B $随$ H $的变化曲线可以大致分为三个阶段：
+
+\begin{enumerate}
+    \item[(1)] 可逆磁化阶段，对应图\ref{fig:1}中的OA段。当$H$足够小时，$B$随$H$的变化可逆，若减小$H$，则$B$会沿AO原路返回至原点O。此时的起始磁化曲线OA是一条斜线，可按如下方法定义起始磁导率$\mu_i$，来表征起始可逆磁化性能：
+    \[
+        \mu_i=\lim_{H\to0}\frac{B}{\mu_0H}
+    \]
+    \item[(2)] 不可逆磁化阶段，对应图\ref{fig:1}中的AS段。若减小$H$，$B$不会沿SA返回。比如当磁场从D点的$H_D$减小到$H_D-\Delta H$，再从$H_D-\Delta H$增大到$H_D$，$B-H$轨迹会是途中点线所示的回线样式。
+    \item[(3)] 饱和磁化阶段，对应图\ref{fig:1}中的SC段。在S点材料已经被磁化至饱和状态，继续增大$H$，磁化强度$M$不再增大。由于$B=\mu_0(M+H)$，$B$会随$H$线形增大，但增量极小。$M$刚刚达到饱和值时，$H$的值记为$H_S$，称为饱和磁场强度；$B$的值记为$B_S$，称为饱和磁感应强度。
+\end{enumerate}
+	
+动态磁滞回线的形状与磁化场频率与幅度都有关。如果磁场在$ [-H_S,H_S] $间作循环变化，那么$ B $也会作循环变化，从而$ B-H $图像成为一个闭合的磁滞回线，此时的磁滞回线称为饱和磁滞回线。在同一频率下，将磁场幅值从0增到$ H_S $得到的一系列磁滞回线，他们的顶点$ (H_m,B_m) $的连线称为动态磁化曲线。在动态磁化曲线上任意一点的$B_m$和$H_m$的比值定义为振幅磁导率$\mu_m$，这是衡量工作在幅度较大的交变磁场的电感铁芯性能的重要指标：
+
+\[
+    \mu_m=\frac{B_m}{\mu_0H_m}
+\]
+
+除了上面定义的起始磁导率$\mu_0$和振幅磁导率$\mu_m$外，在既有直流偏置又有交流弱磁场的情况下，比如在图\ref{fig:1}的D点附近以若交变磁场循环内磁化，当磁场足够弱时，磁滞回线会退化成一条斜线，此时交流弱磁场引起的磁感应强度变化$\Delta B$与磁场强度变化值$\Delta H\to 0$之比决定了可逆磁导率$\mu_R$：
+
+\[
+    \mu_R=\lim_{\Delta_H\to0}\frac{\Delta B}{\mu_0\Delta H}
+\]
+
+直流偏置磁场可以影响$\mu_R$的大小，这一原理被应用在磁放大器的设计中。
+
+闭合磁滞回线的面积对应于循环磁化一周所发生的能量损耗。对材料进行交流动态磁化时，损耗来自于磁滞损耗、涡流损耗、剩余损耗。对于金属氧化物组成的铁氧体磁性材料电阻率高，高频条件下其涡流损耗很小。
+
+由于铁磁材料在加上磁场$ H $后产生的$ B $不仅与磁场强度本身有关，还与材料的磁化历史有关，所以在研究铁磁材料的起始磁化性质时，通常先对铁磁材料进行退磁处理，使之达到磁中性状态。一般使用交流退磁法对材料进行退磁，对材料加交变磁化场，先用大幅度历次电流使它饱和磁化，再不断磁场方向并逐渐减小励磁电流幅度至0使它退磁。
+
+\subsection{动态磁滞回线的测量}
+
+测量动态磁滞回线的原理电路如图\ref{fig:2}所示：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{3-2.png}
+    \caption{用示波器测量动态磁滞回线电路图}
+    \label{fig:2}
+\end{figure}
+
+环形铁芯上绕有三组线圈。线圈1为交流励磁线圈，接交流正弦信号源；线圈2为感应线圈，接RC积分电路；线圈3为直流励磁线圈，用于在测有直流偏置磁场下的可逆磁导率时接直流电源。将$ u_{R_1} $和$ u_C $从示波器两通道输入，在示波器X-Y显示模式下即可看到动态磁滞回线。
+
+\begin{itemize}
+    \item 交流磁场强度$H$的测量利用了线圈1所连接的电路。由安培环路定理，由如下关系：
+    
+    \[
+        H=\frac{N_1}{l}i_1=\frac{N_1}{lR_1}u_{R_1}
+    \]
+
+    其中$N_1$是线圈1的匝数，$l$是磁环的等效磁路长度，$i_1=\frac{u_{R_1}}{R_1}$。
+    \item 直流磁感应强$B$的的测量利用了线圈2所连接的电路。根据法拉第电磁感应定律，线圈2上的感应电压$u_2$大小为：
+    
+    \[
+        u_2=-\frac{N_2\mathrm{d}\Phi}{\mathrm{d}t}=-\frac{N_2S\mathrm{d}B}{\mathrm{d}t}
+    \]
+
+    其中$N_2$是线圈2的匝数，$\Phi$是单匝线圈的磁通量，$S$是单匝线圈环绕的面积。如果$R_2C>>T$（T是外磁场周期），那么电容$C$上的电压远小于总电压$u_2$，电阻$R_2$上的电压$u_{R_{2}}$近似等于总电压$u_2$，电容$C$上的电压为：
+
+    \[
+        u_c=\frac{Q}{C}=\frac{1}{C}\int u_{R_{2}}\mathrm{d}t\approx\frac{1}{CR_2}\int u_2 \mathrm{d}t
+    \]
+
+    其中$Q$是电容器极板上的电荷量，$i_2$是线圈2中的电流。交流磁感应强度$B$正比于$u_C$：
+
+    \[
+        B=\frac{R_2C}{N_2S}u_C
+    \]
+
+\end{itemize}
+
+\subsection{（准）静态磁滞回线和磁滞回线的测量}
+
+\begin{itemize}
+    \item 磁感应强度$B$的数值可以由霍尔元件直接测量。为方便插入元件，需要在实验所用的铁磁材料中开一个极窄的均匀气隙，在测量时直接用霍尔元件读取气隙中磁感应强度$B$的值。
+    \item 磁场强度$H$的数值可以直接由励磁电流大小导出。设磁化电流大小为$I$，磁化线圈的匝数为$N$，样品中的平均磁路长度为$\overline{l}$，则磁化场的磁场强度$H$为
+    
+    \[
+        H=\frac{N}{\overline{l}}I
+    \]
+
+    由于气隙的存在，我们需要对于上式的修正结果进行修正。若铁芯磁炉中有一个小平行间隙$\mathscr{l}_g$，铁芯中平均磁路长度为$\overline{\mathscr{l}}$，而铁芯线圈匝数为$N$，通过电流为$I$，间隙中的磁场强度为$H_g$。那么由安培环路定律：
+
+    \[
+        H\overline{\mathscr{l}}+H_gl_g=NI
+    \]
+
+    在狭缝很窄的情况下，由于间隙磁路截面面积近似等于铁芯面积，因而间隙磁感应强度$B_g\approx B$。
+
+    又因为$\mu_r=1$，故公式最终可以修正为
+
+    \[
+        H\overline{\mathscr{l}}+\frac{Bl_g}{\mu_0}=NI
+    \]
+\end{itemize}
+
+\section{实验内容}
+
+\begin{center}
+    \large \textbf{第一部分}\quad\textbf{用示波器观测动态磁滞曲线}
+\end{center}
+
+\subsection{观测样品1（铁氧体）的饱和动态磁滞回线}
+根据原理电路图连接样品1与交流励磁电路，RC积分电路。
+
+%此处插图1张
+
+\begin{enumerate}
+    \item[(1)] 保持信号源频率为$ f=100\,\mathrm{Hz} $不变，取$ R_1=2.0\,\Omega $,\,$ R_2=50\,\mathrm k\Omega $,\,$ C=10.0\,\upmu\mathrm F $。调节幅度旋钮改变历次电流大小，用示波器的X-Y模式观察$ u_C-u_{R_1} $图像。由于$ B\propto u_C,\,H\propto u_{R_1} $，所观察到的图像即为在$X-Y$方向缩放后的$B-H$图线，即磁滞回线。调得相对原点对称的饱和磁滞回线，利用示波器光标(cursor)功能测量并换算出$ B_S,B_r,H_C $，根据所取的数据点绘制磁滞回线的$ B-H $图像。
+    \item[(2)] 保持信号源幅度不变，在仪器频率可调范围内，观测不同频率时的磁滞回线。在$ R_1,R_2C $不变时测量并比较$ f=95\,\mathrm{Hz} $和$ 150\,\mathrm{Hz} $时的$ B_r $与$ H_C $，并总结不同频率下磁滞回线的变化。
+    \item[(3)] 保持信号源频率$ f=50\,\mathrm{Hz} $不变，固定励磁电流幅度$ I_m=0.1\,\mathrm A $，$ R_1=2.0\,\Omega $，改变积分常量$ R_2C $分别为$ 0.01\,\mathrm s,\;0.05\,\mathrm s,\;0.5\,\mathrm s $，观察并粗略绘制不同积分常量下$ u_{R_1}-u_C $李萨如图形的示意图，并考虑积分常量如何影响该李萨如图形、是否影响真实的磁滞回线形状。
+\end{enumerate}
+
+\subsection{测量样品1（铁氧体）的动态磁滞回线}
+进行以下测量前需先对样品进行退磁处理。
+
+\begin{enumerate}
+    \item[(1)] 在$ f=100\,\mathrm{Hz} $时，取$ R_1=2.0\,\Omega $,\,$ R_2=50\,\mathrm k\Omega $,\,$ C=10.0\,\upmu\mathrm F $，调节磁场幅度从$ 0 $单调增加到$ H_S $，取至少20个数据点。
+    \item[(2)] 根据测得数据，计算并画出$ \mu_m-H_m $曲线；
+    \item[(3)] 测定起始磁导率$ \mu_i $；
+\end{enumerate}
+
+\subsection{观察不同频率下样品2（硅钢）的动态磁滞回线}
+改变电路连接方式，将样品2接入实验电路。
+
+取$ R_1=2.0\,\Omega ,\, R_2=50\,\mathrm k\Omega ,\, C=10.0\,\upmu\mathrm F $，给定交变磁场幅度$ H_m=400\,\mathrm{A/m} $下，分别测量频率$ f=20\,\mathrm{Hz},\;40\,\mathrm{Hz},\;60\,\mathrm{Hz} $时的$ B_m,\,B_r,\,H_C $。
+
+\subsection{测量样品1（铁氧体）在不同直流偏置磁场$ H $下的可逆磁导率}
+
+重新将样品1接入实验电路，并将直流偏置电路与对应线圈连通。测量前需要重新退磁。
+
+交流磁场频率取$ f=100\,\mathrm{Hz} $，其幅度$ \Delta H $足够小，调节电阻、电容分别为$ R_1=2.0\,\Omega,\;R_2=20\,\mathrm k\Omega,\;C=2.0\,\upmu\mathrm F $。将直流偏置磁场从0单调增加到$ H_S $，调节示波器使得便于观察磁化的可逆过程，记录至少10个不同$ H $下的磁导率$ \mu_R $，绘制$ \mu_R-H $曲线。测量时，为保证精度，需调交流信号源幅度使交流磁场$\Delta H$足够小，并调节示波器充分放大李萨如图形。
+
+\begin{center}
+    \large \textbf{第二部分}\quad\textbf{用霍尔传感器测量铁磁材料（准）静态磁滞回线}
+\end{center}
+
+\subsection{测量模具钢样品的起始磁化曲线}
+
+\begin{enumerate}
+    \item[(1)] 选择合适的电流与磁感应强度$B$，用数字式特斯拉计测量样品间隙中磁感应强度$B$与位置$X$的关系，$X$从$-10\,\mathrm{mm}$到$10\,\mathrm{mm}$，间隔$1\,\mathrm{mm}$测一组数据，求得间隙中磁感应强度$B$的均匀区范围$\Delta X$值，将霍尔传感器放在测出的均匀区的中央。
+    \item[(2)] 对样品进行退磁处理。利用交流退磁原理，将励磁电流从$0$增至$600\,\mathrm{mA}$再逐渐减小至$0$，然后将单刀双掷开关反向（即将电流反向），将电流从$0$增至$500\,\mathrm{mA}$再逐渐减小至$0$，再将弹道双掷开关反向。这样磁化电流不断反向，最大电流值每次减小$100\,\mathrm{mA}$直至减小为0。
+    \item[(3)] 测量$B-H$关系曲线。将电流从$0$增至$640\,\mathrm{mA}$，在$I=0,\,100\,\mathrm{mA},\,200\,\mathrm{mA},\,300\,\mathrm{mA},\cdots,\,600\,\mathrm{mA},\,640\,\mathrm{mA}$时记录$B$的测量值。
+\end{enumerate}
+
+\subsection{测量模具钢的磁滞回线}
+
+\begin{enumerate}
+    \item[(1)] 对模具钢进行磁锻炼。$I\approx640\,\mathrm{mA}$时，$B$的增加变得非常缓慢。将$I$保持在此数值不变，拨动开关换向，待读数稳定后继续换向，如此来回波动8-10次。
+    \item[(2)] 测量模具钢的磁滞回线。从磁锻炼的结果开始，通过磁化线圈的电流从饱和电流$I_m$开始逐步减小到$0$，然后开关幻想，电流从$0$增加到$I_m$。重复上述过程，即$(H_m,B_m)\to(-H_m,-B_m)\to(H_m,B_m)$，每隔$100\,\mathrm{mA}$测量一组$(I,B)$值。
+\end{enumerate}
+
+\section{实验结果与数据处理}
+
+\subsection{观察样品1的饱和动态磁滞回线}
+
+\subsubsection{测量频率 $f=100\,\mathrm{Hz}$ 时的饱和磁滞回线}
+
+将测量到的$u_{R_1}$和$u_C$按以下公式转换为$H$和$B$，并将数据汇总成以下表格：
+
+\[
+    H=\frac{N_1}{lR_1}u_{R_{1}} \quad B=\frac{R_2C}{N_2S}u_C
+\]
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|}
+      \hline
+      磁场强度$H\,(\mathrm{A/m})$     & 磁感应强度$B\,(\mathrm{T})$ \\
+      \hline
+      92.31  & 0.54  \\
+      \hline
+      69.23  & 0.52  \\
+      \hline
+      58.85  & 0.51  \\
+      \hline
+      30.00  & 0.47  \\
+      \hline
+      0.00  & 0.13  \\
+      \hline
+      -2.71  & 0.05  \\
+      \hline
+      -5.54  & 0.00  \\
+      \hline
+      -16.15  & -0.27  \\
+      \hline
+      -27.69  & -0.39  \\
+      
+      \hline
+      \end{tabular}%
+      \quad
+      \begin{tabular}{|c|c|}
+      \hline
+      磁场强度$H\,(\mathrm{A/m})$     & 磁感应强度$B\,(\mathrm{T})$ \\
+      \hline
+      -85.96  & -0.54  \\
+      \hline
+      -57.69  & -0.51  \\
+      \hline
+      -27.69  & -0.42  \\
+      \hline
+      -9.23  & -0.27  \\
+      \hline
+      0.00  & -0.10  \\
+      \hline
+      5.54  & 0.00  \\
+      \hline
+      17.88  & 0.27  \\
+      \hline
+      57.69  & 0.49  \\
+      \hline
+      92.31  & 0.54  \\
+      \hline
+      \end{tabular}%
+    \caption{磁滞回线的$B-H$坐标记录表}
+  \end{table}%
+
+由上述结果知，饱和磁感应强度$B_S=0.54\,\mathrm{T}$，剩余磁化强度$B_r=0.13\,\mathrm{T}$，矫顽力$H_c=5.54\mathrm{A/m}$。
+
+利用Origin软件绘制散点图，并利用其自带的功能用光滑曲线连接这些散点，得到样品1（铁氧体）的饱和动态磁滞回线。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{5-1.png}
+    \caption{样品1（铁氧体）的饱和动态磁滞回线}
+    \label{fig:3}
+\end{figure}
+
+在误差允许范围内，图\ref{fig:3}拟合出的图像和理论上的动态饱和磁滞回线基本一致，但仍然有很多不足之处，和真实的动态饱和磁滞回线图像可能存在较大差异。可能的原因如下：
+
+\begin{itemize}
+    \item 实验样品本身不够精密。可以看到测量数据中$(0,B_r),\,(0,-B_r),\,(-H_C,0),\,(H_C,0)$都是严格关于坐标原点对称的，说明示波器光标处于图像中心时示数为零。但$(-H_S,-B_S),\,(H_S,B_S)$两点并不对称，因此可能是实验样品的问题。
+    \item 实验所用示波器会造成系统误差。
+    \item 实验中选点不够科学。可以看到图中的点分布并不均匀，经常出现某一段选点密集而某一段没有任何选点的情况，同时也没有固定一个$u_{R_1}$值去测量上下两支的$u_C$。由于本人第一次使用示波器测量大量的图像坐标数据，且前期过分注重数据精度，实验进度较慢，这种经验不足造成了很多的问题。
+\end{itemize}
+
+\subsubsection{不同频率下磁滞回线的变化}
+
+在$ R_1,R_2C $不变时测量并比较$ f=95\,\mathrm{Hz} $和$ 150\,\mathrm{Hz} $时的$ B_r $与$ H_C $，结果如下：
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|c|}
+      \hline
+      频率$f\,$(Hz)   & $H_c\,$(A/m)    & $B_r\,$(T) \\
+      \hline
+      95  & 14.31  & 0.29  \\
+      \hline
+      150 & 8.52  & 0.22  \\
+      \hline
+      \end{tabular}%
+      \caption{不同频率下的$B_r$与$H_C$}
+\end{table}%
+
+注意到随着频率$f$的降低，$B_r$和$H_C$都有一定程度的下降，此音交变磁场频率较大时，铁氧体的涡流损耗较小，进而交变磁场磁化过程中的总能量损耗减小。而饱和磁滞回线所包围的面积正比于总能量损耗，因此饱和磁滞回线所包围的面积减小。
+
+\subsubsection{积分常量$R_2C$对结果的影响}
+
+保持信号源频率$f=50\,\mathrm{Hz}$由$I_m=0.2\,\mathrm{A},\,R_1=2.0\,\mathrm{A}$知，应当保持$u_1=u_R$最大值为为$0.2\,\mathrm{V} = 200\,\mathrm{mV}$。改变积分常量$R_2C$，调节$R_2C$分别为$0.01\,\mathrm{s},\,0.05\,\mathrm{s},\,0.5\,\mathrm{s}$，相应的$u_{R_1}-u_C$如下：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.3\textwidth]{5-4.jpg}
+    \quad
+    \includegraphics[width=0.3\textwidth]{5-3.jpg}
+    \quad
+    \includegraphics[width=0.3\textwidth]{5-2.jpg}
+    \caption{从左至右依次为$R_2C=0.01\,\mathrm{s},\,0.05\,\mathrm{s},\,0.5\,\mathrm{s}$时的李萨如图}
+\end{figure}
+
+\begin{itemize}
+    \item 为什么积分常量$R_2C$对观察到的李萨如图有影响？
+    
+    前文提到过公式$B=\frac{R_2C}{N_2S}u_C$，故$R_2C$的数值与$u_c$的测量有关。但这一公式成立要求$R_2C>>T$（T是外磁场周期）。此时电容$C$上的电压远小于总电压$u_2$，电阻$R_2$上的电压$u_{R_{2}}$近似等于总电压$u_2$。在本实验中，$R_2C=0.01\,\mathrm{s}$的积分常量太小，$u_2$与$u_{R_2}$不能近似相等，故李萨如图形出现了异常。
+
+    \item 积分常量是否会影响真实的$B-H$磁滞回线的形状？
+    
+    不会。积分常量之影响了$B$的测量，不影响$B$和$H$的实际值。
+\end{itemize}
+
+\subsection{测量样品1（铁氧体）的动态磁滞回线}
+
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|}
+      \hline
+      $H_m\,(\mathrm{A/m})$ & $B_m\,(\mathrm{T})$ \\
+      \hline
+      5.77  & 0.08  \\
+      \hline
+      10.38  & 0.15  \\
+      \hline
+      13.85  & 0.21  \\
+      \hline
+      17.31  & 0.26  \\
+      \hline
+      20.77  & 0.31  \\
+      \hline
+      24.23  & 0.34  \\
+      \hline
+      28.85  & 0.38  \\
+      \hline
+      32.31  & 0.41  \\
+      \hline
+      36.92  & 0.43  \\
+      \hline
+      40.38  & 0.46  \\
+      \hline
+    \end{tabular}%
+    \quad
+    \begin{tabular}{|c|c|}
+    \hline
+    $H_m\,(\mathrm{A/m})$ & $B_m\,(\mathrm{T})$ \\
+    \hline
+    43.85  & 0.47  \\
+    \hline
+    46.15  & 0.48  \\
+    \hline
+    51.92  & 0.49  \\
+    \hline
+    54.23  & 0.49  \\
+    \hline
+    57.69  & 0.50  \\
+    \hline
+    60.00  & 0.51  \\
+    \hline
+    62.31  & 0.51  \\
+    \hline
+    68.08  & 0.52  \\
+    \hline
+    79.62  & 0.53  \\
+    \hline
+    92.31  & 0.54  \\
+    \hline
+    \end{tabular}%
+    \caption{动态磁化曲线的$B_m$与$H_m$坐标记录表}
+  \end{table}%
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5-5.png}
+    \caption{样品1（铁氧体）的动态磁化曲线}
+    \label{fig:4}
+\end{figure}
+
+观察图\ref{fig:4}可知，前5个数据点基本呈线性。将这5个数据输入Mathematica进行线性回归分析，得出斜率为$k=0.01544$。根据起始磁化率$\mu_i$的定义，有：
+
+\[
+    \mu_i=\lim_{H\to0}\frac{B}{\mu_0H}\approx\frac{0.01544}{4\pi\times10^{-7}}\approx1.23\times10^{4}\,\mathrm{A}\cdot\mathrm{T}\cdot\mathrm{m}/\mathrm{N}
+\]
+
+此外，由于$\mu_m=\frac{B_m}{\mu_0H_m}$，我们可以导出$\mu_m-H_m$图图像。下面的图像用excel绘制：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5-6.png}
+    \caption{$\mu_m-H_m$图像}
+    \label{fig:5}
+\end{figure}
+
+\subsection{测量不同频率下样品2（硅钢）的动态磁滞回线}
+
+由$H_m=\frac{N_1}{lR_1}u_{m}$知，当$H_m$恒定在$400\,\mathrm{A/m}$时，随着信号源的频率$f$变化，应当调节幅度旋钮，使示波器中$u_{R_2}$的最大值保持在$u_m=0.4\,\mathrm{V}=4000\,\mathrm{mV}$。分别测量频率$ f=20\,\mathrm{Hz},\;40\,\mathrm{Hz},\;60\,\mathrm{Hz} $时的$ B_m,\,B_r,\,H_C $。
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        $f\,(\mathrm{Hz})$ & $B_m\,(\mathrm{T})$ & $B_r\,(\mathrm{T})$ & $H_C\,(\mathrm{A/m})$ \\
+        \hline
+        $20$ & $34$ & $22.4$ & $2.67\times10^{3}$ \\
+        \hline
+        $40$ & $34$ & $22.4$ & $3.11\times10^{3}$ \\
+        \hline
+        $60$ & $34$ & $23.2$ & $3.78\times10^{3}$ \\
+        \hline
+    \end{tabular}
+    \caption{不同频率下样品2的磁化性质}
+\end{table}
+
+\subsection{测量样品1（铁氧体）在不同直流偏置磁场$H$下的可逆磁导率}
+
+可逆磁导率的定义为：
+
+\[
+    \mu_R=\lim_{\Delta_H\to0}\frac{\Delta B}{\mu_0\Delta H}
+\]
+
+在可逆磁化阶段，$H$和$B$呈线性关系，故我们只需要求出其图形并求出其斜率，即可导出可逆磁化率$\mu_R$。
+
+根据原始数据，测出如下表格：
+
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|c|}
+      \hline
+      $H\,(\mathrm{A/m})$ & $B\,(\mathrm{H})$  & $\mu_R\,(\mathrm{A}\cdot\mathrm{T}\cdot\mathrm{m}/\mathrm{N})$ \\
+      \hline
+      4800  & 288.89  & 47893.85 \\
+      \hline
+      7200  & 288.89  & 31929.23 \\
+      \hline
+      11200 & 288.89  & 20525.94 \\
+      \hline
+      18400 & 288.89  & 12494.05 \\
+      \hline
+      24000 & 288.89  & 9578.77 \\
+      \hline
+      29600 & 266.67  & 7169.14 \\
+      \hline
+      33200 & 200.00  & 4793.82 \\
+      \hline
+      34000 & 138.89  & 3250.71 \\
+      \hline
+      34400 & 97.78  & 2261.89 \\
+      \hline
+      35200 & 75.56  & 1708.10 \\
+      \hline
+      35200 & 57.78  & 1306.20 \\
+      \hline
+      33600 & 44.44  & 1052.61 \\
+      \hline
+      33600 & 37.78  & 894.72 \\
+      \hline
+      33600 & 31.11  & 736.83 \\
+      \hline
+      \end{tabular}%
+    \caption{可逆磁化阶段$H$、$B$与$\mu_R$的测量值}
+  \end{table}%
+
+再将以上数据用excel整理，绘制出如下图像：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5-7.png}
+    \caption{样品1（铁氧体）的$\mu_R-H$图线}
+\end{figure}
+
+\subsection{测量模具钢样品的起始磁化曲线}
+
+在经过退磁处理后，测量起始磁化曲线。其中$B$可以直接从仪器中读取，$H$则需要利用公式$H\overline{\mathscr{l}}+H_gl_g=NI$求解。
+
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|}
+      \hline
+      $H\,(\mathrm{A/m})$ & $B\,(\mathrm{mT})$ \\
+      \hline
+      0     & 0 \\
+      \hline
+      390.92  & 16.7 \\
+      \hline
+      736.73  & 39.7 \\
+      \hline
+      1072.78  & 64.8 \\
+      \hline
+      1330.07  & 101.4 \\
+      \hline
+      1563.15  & 141.4 \\
+      \hline
+      1813.63  & 178.9 \\
+      \hline
+      2063.80  & 216.7 \\
+      \hline
+      2314.25  & 253.2 \\
+      \hline
+      2597.44  & 286.9 \\
+      \hline
+      2899.15  & 316.8 \\
+      \hline
+      3041.01  & 345.8 \\
+      \hline
+      \end{tabular}%
+    \caption{模具钢的起始磁化曲线数据测量表}
+  \end{table}%
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5-8.png}
+    \caption{模具钢的起始磁化曲线}
+\end{figure}
+
+\subsection{测量模具钢样品的（准）静态磁滞回线}
+
+继续按照上述方法测量数据、绘制图像。
+
+\begin{table}[htbp]
+    \centering
+      \begin{tabular}{|c|c|}
+      \hline
+      $H\,(\mathrm{A/m})$ & $B\,(\mathrm{mT})$ \\
+      \hline
+      0     & 0 \\
+      \hline
+      390.92  & 16.7 \\
+      \hline
+      736.73  & 39.7 \\
+      \hline
+      1072.78  & 64.8 \\
+      \hline
+      1330.07  & 101.4 \\
+      \hline
+      1563.15  & 141.4 \\
+      \hline
+      1813.63  & 178.9 \\
+      \hline
+      2063.80  & 216.7 \\
+      \hline
+      2314.25  & 253.2 \\
+      \hline
+      2597.44  & 286.9 \\
+      \hline
+      2899.15  & 316.8 \\
+      \hline
+      3041.01  & 345.8 \\
+      \hline
+      2738.33  & 340.8 \\
+      \hline
+      2005.97  & 325.7 \\
+      \hline
+      1316.54  & 304 \\
+      \hline
+      706.85  & 270.4 \\
+      \hline
+      209.91  & 219.8 \\
+      \hline
+      -198.35  & 155.7 \\
+      \hline
+      -570.31  & 86 \\
+      \hline
+      -915.07  & 12.2 \\
+      \hline
+      \end{tabular}%
+      \quad
+      \begin{tabular}{|c|c|}
+        \hline
+        $H\,(\mathrm{A/m})$ & $B\,(\mathrm{mT})$ \\
+        \hline
+        -1246.40  & -63.5 \\
+        \hline
+        -1605.59  & -135 \\
+        \hline
+        -1993.78  & -202 \\
+        \hline
+        -2408.00  & -265.2 \\
+        \hline
+        -2887.88  & -318.5 \\
+        \hline
+        -3101.36  & -336.7 \\
+        \hline
+        -2802.01  & -331.7 \\
+        \hline
+        -2063.17  & -317.2 \\
+        \hline
+        -1365.78  & -296.7 \\
+        \hline
+        -739.69  & -265.7 \\
+        \hline
+        -218.02  & -218.2 \\
+        \hline
+        204.98  & -156.7 \\
+        \hline
+        578.93  & -87.3 \\
+        \hline
+        928.33  & -14.2 \\
+        \hline
+        1259.50  & 61.4 \\
+        \hline
+        1596.97  & 136.3 \\
+        \hline
+        1995.28  & 201.9 \\
+        \hline
+        2411.32  & 264.7 \\
+        \hline
+        2891.69  & 317.8 \\
+        \hline
+        3107.32  & 335.8 \\
+        \hline
+        \end{tabular}%
+    \caption{模具钢的（准）静态磁滞回线数据测量表}
+  \end{table}%
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5-9.png}
+    \caption{模具钢的（准）静态磁滞回线}
+\end{figure}
+
+\section{思考题}
+
+\begin{enumerate}
+    \item {\kaishu 铁磁材料的动态磁滞回线与静态磁滞回线在概念上有什么区别？铁磁材料动态磁滞回线的形状和面积受哪些因素影响？}
+    
+    动态磁滞回线是指铁磁材料在交变磁场作用下得到的一条闭合$ B-H $曲线，其特点在于使材料磁化的磁场是交变的。静态磁滞回线是指铁磁材料在磁化完全后的$ B-H $曲线，实际测量时会选择在磁场强度$ H $的一个周期内缓慢变化，测定此时的$ B $，得到的图线是可以近似为静态磁滞回线的准静态磁滞回线。
+
+    铁磁材料动态磁滞回线的形状和面积和材料本身性质、外磁场的频率与幅度均有关联。材料的矫顽力越小，磁滞回线越窄；一般地，交变外磁场的频率越大、幅度越小，磁滞回线所包围的面积越小；电阻率较低的材料涡流损耗大，磁滞回线围成面积也较大。
+
+    \item {\kaishu 什么叫做基本磁化曲线？它和起始磁化曲线间有何区别？}
+    
+    基本磁化曲线是由不同的静态磁滞回线的顶点外加坐标原点全部相连形成的曲线，起始磁化曲线是由不同的动态磁滞回线的顶点外加坐标原点全部相连形成的曲线。
+
+    \item {\kaishu 铁氧体和硅钢材料的动态磁化特性各有什么特点？}
+    
+    铁氧体磁导率高，更易被磁化，达到饱和要求的磁场强度$H_m$较小；硅钢难被磁化，需要很大的外磁场才能使其达到饱和，但其磁滞耗损较大，其剩余磁感应强度和矫顽力比铁氧体更大，而磁滞回线围成的面积也更大。
+
+    \item {\kaishu 本实验中，电路参量应怎样设置才能保证$ u_{R_1}-u_C $所形成的李萨如图形正确反映材料动态磁滞回线的形状？}
+    
+    我们使用下面的公式计算$B$：
+    
+    \[
+        B=\frac{R_2C}{N_2S}u_C
+    \]
+
+    而由实验原理部分的推导过程可知，运用该公式的前提条件是$R_2C>>T$，这样才能保证$u_C<<u_{R_2}$，否则会出现实验中$RC=0.01\,\mathrm{s}$时的异常情况。
+
+    \item {\kaishu 准静态磁滞回线测量实验中，为什么要对样品进行磁锻炼才能获得稳定的饱和磁滞回线？}
+    
+    为了得到一个对称、稳定、闭合的磁滞回线。
+\end{enumerate}
+
+\section{反思总结与心得体会}
+
+这是我做的第一个实验，也是一个全程都不顺利的实验，第一个实验我就做到了5：40。这是我第一次用示波器处理实际的图像、第一次用光标功能测量曲线上的点坐标、第一次记录实验数据，虽然之前学过示波器的基本使用，但感觉仍然有很多欠缺，在实际操作上仍然有很多不熟练的地方。这样的不熟练拖垮了我整个实验的进度，也导致我经常要在前一个实验没做完的情况下听老师讲解后面的实验，无论是听讲效率还是接收程度都非常低。
+
+听很多学长说过磁滞回线实验过程复杂、数据点很多，整体难度也偏大，而且在电磁学课程中磁滞回线这一块只是简单带过而不是考试重点，我对磁滞回线的理解也不够透彻，很多东西都是在这次实验中学到的。不过也希望这次实验能成为一种经验教训。下面总结了一些我需要改进的地方，以适应这种高强度的物理实验进程：
+
+\begin{itemize}
+    \item 在课前做好预习。我在课前确实预习了，但是主要关注的是实验原理部分，对于实验目的和实验流程并没有一个完整的认识。以后预习的时候应该更多地预习实验的具体内容。
+    \item 提高仪器使用熟练度。我也是在这门课上刚开始接触这些物理仪器的，所以唯一的办法只能是在每次实验中积累经验教训，掌握各种仪器的不同功能、不同操作方式，提高操作熟练度。
+    \item 遇到不会的及时和老师联系解决。
+\end{itemize}
+
+这些措施有助于提升课上完成实验的效率。但问题不仅仅处在实验课上，在课后处理数据的时候，我也走了很多弯路，踩了好几次坑。我没有任何数据处理相关的相关背景知识，比如我不知道Excel的“带平滑线和数据标记的散点图”这一功能，以为要画这种曲线需要用一个函数模型进行拟合。同时我也不知道什么样的工具适合做数据处理，在这一周的时间内，我试过了Python的Matplotlib绘图工具，试过了Mathematica的非线性拟合函数，试过了Origin的图像绘制，试过了Excel的散点图连线功能。而这四种软件我在一周前都不会，这都是我在这一周的时间之内试过的工具。事实证明Excel的数据处理和绘图功能已经非常强大了，且界面比较美观、操作比较简便，本篇实验报告中大部分散点图连线和线性拟合都是用Excel完成的。以后为了节约时间，可能会在数据处理时以Excel为主。
+
+最后，全篇实验报告都采用了\LaTeX{}排版。在排版的过程中，我也遇到了很多之前没有遇到过的问题，比如如何快速地生成表格、如何处理科学计数法和物理单位的排版方式等。故这篇实验报告也显著地锻炼了我的\LaTeX{}使用技巧。
+
+\end{document}

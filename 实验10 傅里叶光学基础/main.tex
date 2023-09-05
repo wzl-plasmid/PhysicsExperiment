@@ -1,0 +1,566 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper]{geometry}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\usepackage{ctex}
+\usepackage{amsmath,amsfonts,graphicx,subfigure,amssymb,bm,amsthm}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\usepackage{breqn}
+\usepackage{fontsize}
+\usepackage{tikz,xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{physics}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    breaklines
+}
+
+\setmainfont{Palatino Linotype}
+\setCJKmainfont{SimHei}
+\setCJKsansfont{Songti}
+\setCJKmonofont{SimSun}
+\punctstyle{kaiming}
+
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+
+%改这里可以修改实验报告表头的信息
+\newcommand{\experiName}{傅里叶光学基础}
+\newcommand{\supervisor}{王研}
+\newcommand{\name}{王致力}
+\newcommand{\studentNum}{2021K8009908004}
+\newcommand{\class}{3}
+\newcommand{\group}{03}
+\newcommand{\seat}{09}
+\newcommand{\dateYear}{2023}
+\newcommand{\dateMonth}{3}
+\newcommand{\dateDay}{18}
+\newcommand{\room}{705}
+\newcommand{\others}{$\square$}
+%% 如果是调课、补课, 改为: $\square$\hspace{-1em}$\surd$
+%% 否则, 请用: $\square$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%若需在页眉部分加入内容, 可以在这里输入
+% \pagestyle{fancy}
+% \lhead{\kaishu 测试}
+% \chead{}
+% \rhead{}
+\begin{center}
+\LARGE \bf 《\, 基\, 础\, 物\, 理\, 实\, 验\, 》\, 实\, 验\, 报\, 告
+\end{center}
+
+\begin{center}
+    \noindent \emph{实验名称}\underline{\makebox[25em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[8em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}}%%如果名字比较长, 可以修改box的长度"5em"
+    \emph{学号}\underline{\makebox[10em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} （\emph{例}:\, 1\,-\,04\,-\,5\emph{号}）\\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}}\emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{\others\ 是}}
+    \emph{成绩评定} \underline{\hspace{5em}}
+    {\noindent}
+    \rule[8pt]{17cm}{0.2em}
+\end{center}
+
+\begin{center}
+    {\Large \textbf{第一部分 \quad 阿贝成像与基本空间滤波}}
+\end{center}
+
+\section{实验目的}
+\begin{enumerate}
+    \item 掌握一维导轨上光路的调节；
+    \item 通过搭建阿贝成像光路和观察不同空间滤波器的效果，体会和理解成像过程、频谱面、谱空间与实空间对应关系、空间滤波、衍射等物理概念。
+\end{enumerate}
+
+\section{实验器材}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}[pos]{|c|l|}
+        \hline
+        组件名称 & 包含器件 \\
+        \hline
+        激光器组件 & 激光器、棱镜夹持器、一维平移台、宽滑块、支杆和套筒 \\
+        \hline
+        扩束镜组件 & 凹透镜（$\Phi$6，f-10mm）、透镜架、滑块、支杆和套筒 \\
+        \hline
+        准直镜组件 & 凸透镜（$\Phi$40，f-80mm）、透镜架、滑块、支杆和套筒 \\
+        \hline
+        光栅字组件 & 光栅字（$\Phi$76，10线/mm）、滑块、支杆和套筒 \\
+        \hline
+        变换透镜组件 & 凸透镜（$\Phi$76，f-175mm）、镜架、滑块、支杆和套筒 \\
+        \hline
+        滤波器组件 & 滤波器（低通、方向滤波）、干板架、滑块、支杆和套筒 \\
+        \hline
+        白屏组件 & 白屏、板架、滑块、支杆和套筒 \\
+        \hline
+    \end{tabular}
+    \caption{实验仪器与用具列表}
+\end{table}
+
+\section{实验原理}
+\subsection{傅里叶展开和傅里叶变换}
+傅里叶展开和傅里叶变换都常用于研究图像所包含的信息。其中傅里叶展开仅适用于周期函数，而傅里叶变换将傅里叶展开推广到了一般的非周期函数情形。
+
+\subsubsection{傅里叶展开}
+对于一个随自变量作周期变化（频率为$\frac{1}{d}$，周期为$d$）的函数可以展开成一系列离散的频率不同的简谐函数的叠加：
+\[
+    U(x)=a_0+\sum_{n=1}^{\infty}[a_n\cos(2\pi f_n x)+b_n\sin(2\pi f_n x)]
+\]
+其中$n$是正整数，$f_1=\frac{1}{d}$为基频，$f_n=nf_1$称为$n$次谐频。展开式称为傅里叶级数，$a_n$和$b_n$称为傅里叶系数。
+
+此外，根据
+\[
+    \begin{aligned}
+        \cos\alpha&=\frac{1}{2}(e^{i\alpha}+e^{-i\alpha}) \\
+        \sin\alpha&=\frac{1}{2i}(^{i\alpha}-e^{-i\alpha})
+    \end{aligned}
+\]
+可知，$U(x)$的傅里叶展开式也可以写作
+\[
+    \begin{aligned}
+        U(x)&=a_0+\sum_{n=1}^{\infty}[\frac{a_n}{2}(e^{i2\pi f_nx}+e^{-i2\pi f_nx})+frac{b_n}{2i}(e^{i2\pi f_nx}-e^{-i2\pi f_nx})] \\
+        &=a_0+\sum_{n=1}^{\infty}[(\frac{a_n}{2}+\frac{b_n}{2i})e^{i2\pi f_nx}+(\frac{a_n}{2}-\frac{b_n}{2i})e^{-i2\pi f_nx}] \\
+        &=\sum_{n=-\infty}^{+\infty}A_ne^{2\pi f_nx}
+    \end{aligned}
+\]
+
+\subsubsection{傅里叶变换}
+我们将上述结果推广到一般的非周期函数，将“求和”变为“求积分”，即可将任意一个函数展开成一系列频率连续分布的简谐函数的叠加。
+
+用复指数的形式表达傅里叶变换和逆变换的形式如下：
+\[
+    \begin{aligned}
+        G(f)&=\int_{-\infty}^{+\infty}g(x)e^{-i2\pi fx}\mathrm{d}x \\
+        g(x)&=\int_{-\infty}^{+\infty}G(f)e^{-i2\pi fx}\mathrm{d}f
+    \end{aligned}
+\]
+其中$G(f)$称为$g(x)$的傅里叶变换或傅里叶变换。以上两个公式分别称为从$g(x)$到$G(f)$的傅里叶变换和从$G(f)$到$g(x)$的傅里叶逆变换。
+
+对于二维空间上的分布函数$g(x,y)$，相应的傅里叶变换和傅里叶逆变换为
+\[
+    \begin{aligned}
+        G(f_x,f_y)&=cg(x,y)e^{-i2\pi (f_xx+f_yy)}\mathrm{d}x\mathrm{d}y \\
+        g(x,y)&=\iint_{-\infty}^{+\infty}e^{i2\pi (f_xx+f_yy)}\mathrm{d}f_x\mathrm{d}f_y
+    \end{aligned}
+\]
+
+\subsection{阿贝成像}
+基于几何光学的传统光学把“物”理解为光源，“物”与“像”理解为一对一的映射关系，而透镜是实现把发散的光线重聚焦和实现“物”与“像”映射关系的核心部件。而阿贝成像原理基于傅里叶变换的观点，以光场为核心，分为两步：第一步是一个傅里叶变换，将光场的空间分布变换为傅氏面内的空间频谱分布，透镜的后焦面$\mathscr{F}$就是傅氏面；第二步就是将傅氏面内的空间频谱分布作逆变换，还原为雷同于物的像。而透镜的有限口径阻拦了空间频谱的高频成分，致使像的清晰度下降。透镜实际上是一个低通滤波器。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{1-2-1.png}
+    \caption{对于透镜成像的不同理解与图像}
+\end{figure}
+
+考虑一个简单的情况。如图所示，设物、透镜、频谱面和像面都在$x,\,y$平面内，光场沿$z$方向传播；透镜焦距维$F$，单色光源波长为$\lambda$。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{1-2-2.png}
+    \caption{阿贝成像原理说明图}
+\end{figure}
+
+任何一个物对于一个单色平行入射的相干光源的调整, 可以理解或者转化为一系列沿空间方向变化的余弦光栅的总和。不失一般性地，只考虑沿$x$方向的变化。这些不同频率的余弦光栅的空间频率为$f_i$, 其物光波波前为
+
+\[
+    U_{ab}(x,y)=A_1(t_0 + t_i \cos 2\pi f_i x)
+\]
+
+仅考虑其中一个单频信息$f_i$，其经过物镜变换后，该光场会在后焦面形成三个点状衍射斑$S_0$，$S_{+1}$和$S_{-1}$。这三个点状衍射斑中，$S_0$处于xy平面的中心，即$S_0=0$；而$S_{+1}$和$S_{-1}$分别对称地分布在$x$方向的偏轴位置上，其偏轴距离满足
+
+\[
+    S_{\pm 1} = \pm F \tan\theta_i\text{，其中}\sin\theta_i = f_i\lambda
+\]
+
+这三个相干点光源成为新的次级光源，发射球面波。这三个点源的光场复振幅分别为
+
+\[
+    \begin{aligned}
+        A_0 &\propto A_1t_0e^{ikL(BS_0)} \\
+        A_1 &\propto \frac{1}{2}A_1t_ie^{ikL(BS_{+1})} \\
+        A_{-1} &\propto \frac{1}{2}A_1t_ie^{ikL(BS_{-1})}
+    \end{aligned}
+\]
+
+这三个新光源的相干光在像面形成干涉，其干涉像场最终结果为
+
+\[
+    U_{im}(x',y')=K\exp(ik\frac{x^{\prime 2}y^{\prime 2}}{2z})A_1(t_0 + t_i \cos 2\pi f_i'x')
+\]
+
+从上面的的推导过程可知，物原本的单频信息$f_i$可以在像面重构为相似但空间频率为$f_i'$的信号，其比值$V=\frac{f_i'}{f_i}$就是放大率；每一个物体都是一系列$f_i$的组合，因此在像面也会成一个由$f_i'$组合的像，其放大率为$V$。
+
+\section{实验内容}
+按照图示的顺序布置光路，自左向右依次为激光器组件、扩束镜组件、准直镜组件、光栅组件、变换透镜组件、滤波器组件和白屏组件。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{1-2-3.png}
+    \caption{阿贝成像原理及空间滤波原理实物图}
+\end{figure}
+
+首先调整激光器出口到支杆顶部距离为90mm，调试平移台及激光器抚养使其沿导轨重心水平传播，最后调节白屏前后位置直到激光在近处和远处均能搭载白屏上同样参考高度位置，使激光器和白屏等高平行。然后依次安装扩束镜、准直镜、光栅字、变换透镜和滤波器。图中红线与红线之间距离依次为 40mm、70mm、40mm、240mm、195mm 和 445mm。
+
+光栅中的字是一个正立的“光”字，首先去掉滤波器观察白屏上的成像，然后加上滤波器并调整缝的方向，观察成像的特点。
+
+\section{实验结果与数据处理}
+阿贝实验中的光路布置如图所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1-5-1.jpg}
+    \caption{阿贝成像实验装置}
+\end{figure}
+
+不接光栅字时，滤波器后的光成像效果呈十字型，且既有又有横向条纹又有纵向条纹，如下图所示。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1-5-2.jpg}
+    \caption{不接光栅字时的成像}
+\end{figure}
+
+接上光栅字且不接滤波器的情况下成像如图所示，是一个倒立的“光”字，既有横向条纹又有纵向条纹。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{1-5-3.png}
+    \caption{不安装滤波器时的像由横竖条纹组成}
+\end{figure}
+
+安装狭缝作为滤波器并调整其角度，观察光栅字的变化，如下图所示。可以看到狭缝位置为横向时只存在纵向条纹，狭缝位置为纵向时只存在横向条纹，狭缝为斜向45$^\circ$时只存在斜向45$^\circ$条纹，且实验中狭缝的方向为从左上到右下，而条纹从左下到右上，反过来也类似。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[c]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{1-5-4.png}
+        \caption{横向狭缝滤波}
+    \end{minipage}
+    \begin{minipage}[c]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{1-5-5.png}
+        \caption{纵向狭缝滤波}
+    \end{minipage}
+    \begin{minipage}[c]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{1-5-6.png}
+        \caption{斜向45$^\circ$狭缝滤波}
+    \end{minipage}
+    %\caption{安装滤波器狭缝后的像}
+\end{figure}
+
+下面改用圆孔作为滤波器，仅允许0级点通过，观察到条纹消失。由于手机问题，拍出来的光栅字颜色不太一样。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.18\textwidth]{1-5-7.jpg}
+    \caption{仅 0 级点通过时的成像情况}
+\end{figure}
+
+\newpage
+
+%\section{实验总结}
+%TODO
+
+\begin{center}
+    {\Large \textbf{第二部分 \quad 光学4F成像}}
+\end{center}
+
+\setcounter{section}{0}
+\section{实验目的}
+体会和掌握光学4F成像系统的组织和搭建；在前面阿贝成像实验的基础上，进一步体会更为复杂的光学信息处理。光学4F系统目前广泛应用于飞秒激光脉冲整形器中，产生不同频带和脉宽的光脉冲。
+
+\section{实验器材}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}[pos]{|c|l|}
+        \hline
+        组件名称 & 包含器件 \\
+        \hline
+        光源组件 & 半导体激光器（650nm）、一维平移台、宽滑块、支杆和套筒 \\
+        \hline
+        准直镜组件 & 凸透镜组件（$\Phi$6，f-9.8mm）、透镜架、滑块、支杆和套筒 \\
+        \hline
+        调制物组件 & 物板、干板架、支杆和套筒 \\
+        \hline
+        变换透镜组件 & 凸透镜（$\Phi$40，f-175mm）2个、镜架、滑块、支杆和套筒 \\
+        \hline
+        滤波器组件 & 滤波器（低通、方向滤波）、干板架、滑块、支杆和套筒 \\
+        \hline
+        白屏组件 & 白屏、板架、滑块、支杆和套筒 \\
+        \hline
+    \end{tabular}
+    \caption{实验仪器与用具列表}
+\end{table}
+
+\section{实验原理}
+前面阿贝实验是使用的单透镜成像系统，而4F图像处理系统使用两个透镜依次实现傅里叶变换和反傅里叶变换的光学操作，把成像要素与频谱操作要素分离开，是一种可控性、保真性、稳定性更好的相干光学处理系统。4F系统的结构如图所示，几个平面的间距都为F，因此得名为4F系统。该系统可以消除由于两次傅里叶变换引入的负号。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{2-2-1.png}
+    \caption{相干光学处理系统（4F系统）}
+\end{figure}
+
+\section{实验内容}
+实验中选取f=150mm，可以在先前的阿贝成像装置基础上进一步修改，激光器、扩束镜、准直镜和白屏不用移动，而需要依次安装物孔、变换透镜1、变换透镜2。
+
+在安装过程中，需要使得光束正入射透过各个装置的中心，然后固定装置以保持垂直高度一致。此外，变换透镜是有可能在两个方向上的焦距稍有差异的，因此两个变换透镜需要对称（或者对易）使用，即两个变换透镜必须使用相同的焦距方向相对放置。为了减少像差，透镜放置原则可以简单记为“凹凸面对准平行光”。
+
+\section{实验结果与数据处理}
+在阿贝成像实验基础上稍作修改即可得到本实验所用装置，其中最重要的一步是安装两个焦距为150mm的透镜，两透镜间距为两倍焦距，即300mm；左边透镜到变换透镜、右边透镜到光屏的距离同样为150mm。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{2-5-1.png}
+    \caption{4F系统的装置搭建过程}
+\end{figure}
+
+利用 4f 成像系统时光栅字清晰且条纹明显，说明 4f 成像系统保存信息更完全，成像更清晰且稳定。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.3\textwidth]{2-5-2.jpg}
+    \caption{4F系统中的成像情况}
+\end{figure}
+
+%\section{实验总结}
+%TODO
+
+\begin{center}
+    {\Large \textbf{第三部分 \quad 假彩色编码}}
+\end{center}
+
+\setcounter{section}{0}
+\section{实验目的}
+在基本空间滤波的基础上，进一步体会光栅衍射的色散效果和选频滤波操作，掌握$\theta$调制假彩色编码的选频滤波和色散选区滤波的原理；并利用提前预制分区信息的光栅图案，实现该图像的假彩色编码。
+
+\section{实验器材}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}[pos]{|c|l|}
+        \hline
+        组件名称 & 包含器件 \\
+        \hline
+        光源组件 & 白光LED、一维平移台、宽滑块、支杆和套筒 \\
+        \hline
+        准直镜组件 & 凸透镜组件（$\Phi$40，f-80mm）、透镜架、滑块、支杆和套筒 \\
+        \hline
+        调制物组件 & 天安门光栅（100线/mm）、干板架、滑块、支杆和套筒 \\
+        \hline
+        变换透镜组件 & 凸透镜（$\Phi$76，f-175mm）2个、镜架、滑块、支杆和套筒 \\
+        \hline
+        滤波器组件 & 滤波器（低通、方向滤波）、干板架、滑块、支杆和套筒 \\
+        \hline
+        白屏组件 & 白屏、板架、滑块、支杆和套筒 \\
+        \hline
+    \end{tabular}
+    \caption{实验仪器与用具列表}
+\end{table}
+
+\section{实验原理}
+天空、天安门、草地三个区域是通过三次分别曝光预制了不同方向的光栅刻线，其中天空为蓝色，天安门为红色，草地为绿色。白光光源照射透明的天安门（物面上的被调制物）后，将携带了物信息的衍射场继续向前传播，经过光栅后，不同颜色的光分散开来，呈现出各种颜色；衍射光经过透镜重新汇聚后，在频谱面上形成清晰的图样。由于天安门图样不同区域的光栅方向不同，故其衍射图样的展开方向也不同。
+
+用三个不同方向不同颜色的彩色滤片来过滤不同方向的衍射条纹可以实现不同区域的彩色编码。由于这种编码方法是利用不同方位的光栅对图像不同空间部位进行调制来实现的，故称为$\theta$调制空间假彩色编码。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{3-2-1.png}
+    \caption{假彩色编码的空间滤波原理图}
+\end{figure}
+
+\section{实验内容}
+按图示顺序搭建光学装置。安装白光 LED 点光源，调节准直镜使得光斑远近变化不大，再将“天安门”调制物放置在准直镜后 40 mm 处，变换透镜放置在调制物后 175 mm 处。
+
+在变换透镜频谱面上放置滤波器，在像平面上放置白屏，微调使得滤波器处光斑最明显、白屏上成像清晰，记录光路。
+
+调整$\theta$调制滤波器（三色滤片滤波器）趋向使得像着色为“蓝天、红色天安门、绿地”并记录。
+
+将白纸放置在频谱面，挖去横向黄色光斑、左下右上倾斜红色光斑、左下右上倾斜蓝色光斑位置，形成自制滤波器，自制滤波器替换提供的滤波器，记录像。
+
+\section{实验结果与数据处理}
+按照上述要求搭建实验装置，如下图所示。在安装给定的天安门光栅时，需要注意天安门光栅的方向应当倒置，以便得到正立的像
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{3-5-0.jpg}
+    \caption{假彩色编码实验装置示意图}
+\end{figure}
+
+实验中先使用给定的滤波器，记录成像。然后按讲义上的图案自制滤波器替代给定的滤波器，两个实验的结果如下图所示。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{3-5-1.jpg}
+        \caption{不加滤波器时的成像}
+    \end{minipage}
+    \qquad\qquad
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{3-5-2.jpg}
+        \caption{加给定滤波器时的成像}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{3-5-3.png}
+    \caption{自制滤波器的成像}
+\end{figure}
+
+\section{思考题}
+{\kaishu 实验中使用的天安门城楼光栅本身中的城楼的窗户和门洞都是透光的，但是为什么经过所提供的假着色滤波处理后所成的像中这些窗户和门洞是黑色的？有方法验证你的解释吗？}
+
+实验中的天安门光栅的城楼的窗户和门洞的部位是直接透光的，没有光栅结构，经过窗户和门洞的光线会聚集在频谱面上的零级衍射位置。而滤波器中间被挡住，光线无法透过，故在成像中城楼的窗户和门洞是暗的。
+
+我们可以在滤波器中间挖洞，仅让零级衍射透过，观察天安门的窗户和门洞是亮还是暗。
+
+%\section{实验总结}
+%TODO
+
+\begin{center}
+    {\Large \textbf{第四部分 \quad 光栅和光栅仪器}}
+\end{center}
+
+\setcounter{section}{0}
+\section{实验目的}
+\begin{enumerate}
+    \item 了解光栅光谱仪的结构原理；
+    \item 粗略测量光栅的光栅常数；
+    \item 掌握一种标定光栅光谱仪的方法；
+    \item 学会用光栅光谱仪测绘物质的光吸收谱。
+\end{enumerate}
+
+\section{实验器材}
+本实验采用的 OTO SE1040 便携式光栅光谱仪，使用 1200 线/mm 光栅和 CCD感光元件，23 微米狭缝，通过光纤引入光源。工作波长范围为 350-1020nm。
+
+\section{实验原理}
+\subsection{光栅常数的测量}
+本实验利用夫琅禾费多缝衍射的性质测量光栅常数（即相邻两缝的中心距离）。光路图非常简单，只需要将激光光源经过光栅然后入射到垂直于中轴线的光屏上即可，由于是粗略测量，不需要扩束和准直等操作。
+
+光栅方程为
+\[
+    d\sin\theta = m\lambda,\quad m = 0,\pm1,\pm2,\dots
+\]
+在已知$\lambda$的情况下，我们只需要导出$\sin\theta$就可以推出$d$，而由于$\theta$较小，满足近似：
+\[
+    \sin \theta \approx \theta \approx \tan \theta = \frac{D}{L}
+\]
+其中$D$是第$m$级衍射极大处到零级极大处的距离，$L$是光屏到光栅的距离。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{4-2-0.jpg}
+    \caption{光栅衍射的规律}
+\end{figure}
+
+\subsection{用手持光栅光谱仪测量波长}
+光谱是复色光经过色散系统（如棱镜、光栅）分光后，被色散开的单色光按波长（或频率）大小而依次排列的图案。本实验研究的激光或白光经过光栅衍射后得到的衍射光谱。
+
+光栅光谱仪是用光栅作为色散元件的分光仪器，利用光栅将成分复杂的光分解为沿不同方向的单色光，可用于产生单色光（通常称作单色仪），或利用光探测器测量得到光的波长组成，是目前应用最广泛的一种光谱仪器。本实验使用的Czerny-Turner型（简称C-T型光谱仪）光栅光谱仪是一种色散型光栅光谱仪。经由仪器内的光路，最终我们在出射狭缝处得到的是某一波长的单射光，通过转动其光栅，最终可获得不同波长的单色光。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{4-2-1.png}
+    \caption{C-T型光谱仪光路原理图}
+\end{figure}
+
+C-T型光谱仪的原理图如图所示。入射光聚焦在入射狭缝S1平面，经平面镜M1反射后转向凹面反射镜M2，M2至S1的距离等于M2的焦距，故反射光是平行光。反射光经光栅G衍射后不同波长的光仍然平行。和上述步骤类似地，通过凹面镜M2和平面镜M4后，在出射狭缝S2处用CCD感光元件观察。由于S2只让某特定波长的光透过，因此我们观察到的是单色光。
+
+色散型光栅光谱仪有四个基本的光学性能指标，它们分别是色散率、分辨本领、光谱工作范围与聚光本领。它们与光栅仪所使用的光学元器件质量（如反射镜与光栅的性能指标、狭缝宽度和外部配套系统等因素）有关，一般认为光栅性能指标和狭缝宽度是其中最重要的因素。
+
+\section{实验内容}
+使用手持式光栅光谱仪和 SpectraSmart 软件测量激光或白光的光栅衍射光的光谱和波长，判断与经验值是否一致。
+
+\section{实验结果与数据处理}
+\subsection{光栅常数的测量}
+实验中我们使用波长为650nm的红光，测得对于衍射的一级极大，$\sin \theta \approx 0.06625$，由于没有数据记录表只有我在平板上演算的部分过程，光屏到的光栅的距离以及一级极大到零级极大的距离没有记录下来。
+
+由此，根据$d\sin\theta\approx m\lambda$可可以粗略估算出光栅常数$d\approx9.8\times10^{-6}$m。
+
+\subsection{用手持光栅光谱仪测量波长}
+本实验的光路较为简单，只需要将光源透过光栅后入射到探测器中，探测器通过USB线将数据传输到SpectraSmart进行处理和光谱绘制即可。本实验不需要准直和扩束等操作。
+
+下图依次为绿色光栅、蓝色光栅、白色光栅、红色光栅。注意到除了白色光栅外其他光栅的光谱都只有一个峰，而且峰对应的波长就对应于光栅允许透过的颜色；而白色光栅具有两个峰而且宽度相对较大，说明白光是多种色光的混合，这与物理规律是基本一致的。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4-5-1.jpg}
+        \caption{绿色光栅对应光谱} 
+    \end{minipage}
+    \qquad\qquad
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4-5-2.jpg}
+        \caption{蓝色光栅对应光谱} 
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4-5-3.jpg}
+        \caption{白色光栅对应光谱} 
+    \end{minipage}
+    \qquad\qquad
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4-5-4.jpg}
+        \caption{红色光栅对应光谱} 
+    \end{minipage}
+\end{figure}
+
+%\newpage
+
+\begin{center}
+    {\Large \textbf{第五部分 \quad 实验总结}}
+\end{center}
+
+本实验难度不大，对准直调节要求不高，对光学元件之间的距离调节也不是很严格，大多数时候在一定范围内都可以看到相对明显的现象。但个人做起来并不算顺利，尤其是对于实验原理有些半懂不懂，对于光栅、滤波器等概念的具体所指并不熟悉，且没有实验数据记录表给自己提示实验流程，导致我虽然预习过，但仍然对实验的全流程并不熟悉。
+
+最后，本篇实验报告全部用\LaTeX{}排版，这里感谢21级计算机专业的吉骏雄同学和21级人工智能专业的林诚皓同学提供实验报告表头所用模板，也感谢16级物理系樊兆兴学长对于部分\LaTeX{}相关问题的解答！
+
+\end{document}

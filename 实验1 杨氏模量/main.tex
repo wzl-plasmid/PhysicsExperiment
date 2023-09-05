@@ -1,0 +1,479 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper]{geometry}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\usepackage{ctex}
+\usepackage{amsmath,amsfonts,graphicx,subfigure,amssymb,bm,amsthm}
+\usepackage{algorithm,algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\usepackage{breqn}
+\usepackage{fontsize}
+\usepackage{tikz,xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{physics}
+\usepackage{diagbox}
+\usepackage{multirow}
+\usepackage{makecell}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    breaklines
+}
+
+\setmainfont{Palatino Linotype}
+\setCJKmainfont{SimHei}
+\setCJKsansfont{Songti}
+\setCJKmonofont{SimSun}
+\punctstyle{kaiming}
+
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+
+%改这里可以修改实验报告表头的信息
+\newcommand{\experiName}{霍尔位置传感方法测量杨氏模量}
+\newcommand{\supervisor}{刘泽}
+\newcommand{\name}{王致力}
+\newcommand{\studentNum}{2021K8009908004}
+\newcommand{\class}{3}
+\newcommand{\group}{03}
+\newcommand{\seat}{09}
+\newcommand{\dateYear}{2023}
+\newcommand{\dateMonth}{3}
+\newcommand{\dateDay}{11}
+\newcommand{\room}{710}
+\newcommand{\others}{$\square$}
+%% 如果是调课、补课, 改为: $\square$\hspace{-1em}$\surd$
+%% 否则, 请用: $\square$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%若需在页眉部分加入内容, 可以在这里输入
+% \pagestyle{fancy}
+% \lhead{\kaishu 测试}
+% \chead{}
+% \rhead{}
+\begin{center}
+\LARGE \bf 《\, 基\, 础\, 物\, 理\, 实\, 验\, 》\, 实\, 验\, 报\, 告
+\end{center}
+
+\begin{center}
+    \noindent \emph{实验名称}\underline{\makebox[25em][c]{\experiName}}
+    \emph{指导教师}\underline{\makebox[8em][c]{\supervisor}}\\
+    \emph{姓名}\underline{\makebox[6em][c]{\name}}%%如果名字比较长, 可以修改box的长度"5em"
+    \emph{学号}\underline{\makebox[10em][c]{\studentNum}}
+    \emph{分班分组及座号} \underline{\makebox[5em][c]{\class \ -\ \group \ -\ \seat }\emph{号}} （\emph{例}:\, 1\,-\,04\,-\,5\emph{号}）\\
+    \emph{实验日期} \underline{\makebox[3em][c]{\dateYear}}\emph{年}
+    \underline{\makebox[2em][c]{\dateMonth}}\emph{月}
+    \underline{\makebox[2em][c]{\dateDay}}\emph{日}
+    \emph{实验地点}\underline{{\makebox[4em][c]\room}}
+    \emph{调课/补课} \underline{\makebox[3em][c]{\others\ 是}}
+    \emph{成绩评定} \underline{\hspace{5em}}
+    {\noindent}
+    \rule[8pt]{17cm}{0.2em}
+\end{center}
+
+\begin{center}
+{\Large \textbf{第一部分 \quad 利用霍尔效应实验仪测量磁感应强度}}
+\end{center}
+
+\section{实验目的}
+\begin{enumerate}
+    \item 熟悉霍尔位置传感器的特性；
+    \item 弯曲法测量金属条的杨氏模量；
+    \item 测黄铜杨氏模量的同时，对霍尔位置传感器定标；
+    \item 用霍尔位置传感器测量可锻铸铁的杨氏模量；
+    \item 阅读扩展资料，学习光杆法测微小位移、动态法测金属棒杨氏模量。
+\end{enumerate}
+
+\section{实验器材}
+实验仪器为杭州大华DHY-1A霍尔位置传感器法杨氏模量测定仪（底座固定箱、读数显微镜及调节机构、SS495A型集成霍尔位置传感器、测试仪、磁体、支架、加力机构等）。样品为黄铜条、铸铁条。
+
+霍尔法杨氏模量测定仪器的主要技术指标如下：
+
+\begin{enumerate}
+    \item 读数显微镜：目镜放大率10倍，目镜测微鼓轮最小分度值0.01\,mm，物镜放大率2倍，测量范围为$ 0\sim 6\,\mathrm{mm} $，鼓轮实际读数最小分辨率0.005\,mm。
+    \item 电子传感器加力系统：$ 0\sim 199.9\,\mathrm{g} $连续可调，三位半数显。
+    \item 霍尔电压表有两档量程：量程1为$ 0\sim 199.9\,\mathrm{mV} $，分辨率$ 0.1\,\mathrm{mV} $；量程2为$ 0\sim 1.999\,\mathrm{V} $，分辨率$ 1\,\mathrm{mV} $。
+    \item 霍尔位置传感器：灵敏度大于$ 250\,\mathrm{mV/mm} $，线性范围$ 0\sim 2\,\mathrm{mm} $。
+\end{enumerate}
+
+\section{实验原理}
+\subsection{杨氏模量简介}
+杨氏模量是描述固体材料抵抗形变能力的物理量，完全由材料的性质决定，与材料的几何形状无关。考虑材料为柱状的简单情况，设材料的长度为$L$，截面积为$S$，沿长度方向受外力作用后伸长（或缩短）量为$\Delta L$，单位横截面积上垂直作用力$\frac{F}{S}$称为正应力，物体的相对伸长$\frac{\Delta L}{L}$称为线应变。在弹性范围内，有：
+
+\[
+    \frac{F}{S}=Y\frac{\Delta L}{L}
+\]
+
+其中比例系数$Y$称为杨氏模量，在国际单位制中单位为$\mathrm{N/m^2}$。为了求出杨氏模量，我们需要精确地测量$\Delta L$，因此需要一些精确测量微小长度的技术。本实验主要运用了霍尔法和光杆法来测量微小长度的变化，两者的原理将在实验原理部分继续探讨。
+
+\subsection{霍尔位置传感方法测量杨氏模量}\label{subsec:hallprinciple}
+霍尔元件置于磁感强度为$ B $的磁场中，再垂直于磁场的方向上加上电流$ I $，那么在与这两者垂直的方向上将产生霍尔电势差
+
+\[
+    U_H=K\cdot I\cdot B
+\]
+
+其中$K$为元件的霍尔灵敏度。如果保持霍尔元件的电流$ I $不变，使其在一个均匀梯度的磁场中移动时，输出的霍尔电势差变化量为
+
+\[
+    \Delta U_H=K\cdot I\cdot\frac{\dd B}{\dd Z}\cdot\Delta Z
+\]
+
+其中$ \Delta Z $为位移量，此式说明若$\frac{\dd B}{\dd Z}$为常数，即在均匀梯度的磁场中，$\Delta U_H$与$\Delta Z$成正比。
+
+为实现均匀梯度的磁场，可以将两块相同的磁铁（磁铁截面积及表面感应强度相同）的N 极与 N 极相对，两磁铁之间留一等间距间隙，霍尔元件平行于磁铁放在该间隙的中轴上。间隙越小，磁场梯度就越大，灵敏度就越高。磁铁截面要远大于霍尔元件，以尽可能的减小边缘效应的影响，提高测量精确度。当位移量$\Delta Z$较小时（<0.2mm），霍尔电势差与位移量之间存在良好的线性关系。
+
+在横梁弯曲的情况下，结合胡克定律以及力矩等进行分析，可以得到弯曲法中的杨氏模量表达式
+
+\[
+    Y=\frac{d^3\cdot Mg}{4a^3\cdot b\cdot\Delta Z}
+\]
+
+其中$d$为两刀口之间的距离，$M$为所加拉力对应的质量，$a$为梁的厚度，$b$为梁的宽度，$\Delta Z$为梁中心由于外力作用而下降的距离，$g$为重力加速度。该公式会在霍尔法测杨氏模量中用于处理数据和求解杨氏模量。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{1-2-1.png}
+    \caption{霍尔位置传感元件原理图}
+\end{figure}
+
+\subsection{光杠杆法测量杨氏模量}
+光杠杆法是另一种测量微小的长度量变化的方法，它利用光的偏转前后在刻度尺上光斑的位置变化反映长度量实际的微小变化。在光杠杆法中，我们有杨氏模量的表达式
+
+\[
+    E=\frac{8FLD}{\pi d^2b\Delta x}
+\]
+
+式中$F$钢丝所受拉力，$L$两夹头之间钢丝的长度，$D$为数显标尺到光杠杆镜面的垂直距离，$d$为钢丝直径，$\Delta x$（此次测量与前次测量标尺数值测量之差）多次测得的平均值，$b$为光杠杆两前支承点的竖直平面到光杠杆后支承点的距离。根据这些量可以通过线性拟合并通过读取斜率斜率解出杨氏模量的值。
+
+\subsection{弹性杨氏模量法}
+需要用到YMC-1D卧式杨氏模量测定仪，采用杠杆加力，并用百分表直接读取钢丝的伸长量。根据公式$\frac{\Delta F}{S}=Y\frac{\Delta L}{L}$可得，
+
+\[
+    Y=\frac{4 \Delta F \cdot L}{\pi \cdot d^2 \cdot \Delta L}
+\]
+
+\section{实验内容}
+本次实验中霍尔法为必做，光杠杆法为选做，由于我做完霍尔法时实验室里已经没几个人了了，因此我只做了霍尔法。
+
+\subsection{霍尔法}
+\begin{enumerate}
+    \item 调节使得霍尔位置传感器探测元件位于磁铁中间的位置。
+    \item 用水平泡观察平台是否处于水平位置，若偏离则调节水平调节机脚。
+    \item 对霍尔位置传感器毫伏电压表调零，通过磁体调节结构上下移动磁铁，当毫伏表读数很小时，停止调节并固定螺丝，最后调节电位器使得毫伏表读数为零。
+    \item 调节读数显微镜，使得眼睛观察十字线与分划板刻度线和数字清晰，移动读数显微镜前后距离，知道清晰看到铜刀口上的基线。锁紧旋钮旁边的缩进螺钉，转动读数显微镜读数鼓轮使得铜刀口上的基线与读数显微镜内十字刻度线吻合。
+    \item 在拉力绳不受力的情况下将电子秤传感器加力系统调零。
+    \item 通过加力调节旋钮逐次增加拉力（对于黄铜每次增加$10\,\mathrm{g}$，对于可锻铸铁每次增加$20\,\mathrm{g}$），相应从读数显微镜上读出梁的弯曲位移$\Delta Z_i$及霍尔数字电压表相应的读数值$U_i$（单位\,mV）。
+    \item 实验完毕松开加力旋钮傍边的锁紧螺钉，松开加力旋钮，取下试样。多次测量并记录试样在两刀口间的长度$ d $，不同位置横梁宽度$b$以及横梁厚度$a$。
+    \item 关闭电源，整理实验桌面，实验器材放置于实验初始位置。
+    \item 用逐差法处理数据并分析，求得黄铜材料的杨氏模量与霍尔位置传感器的灵敏度$\frac{\Delta U_i}{\Delta Z_i}$并与公认值进行比较。
+\end{enumerate}
+
+\section{实验结果与数据处理}
+\subsection{样品为黄铜的情况}
+首先测量横梁的几何尺寸，结果如下表所示。注意长度是指两个支架之间的长度，而不是整个样品的长度。
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|ccccc|c|}
+    \hline
+    测量次数    & 1     & \multicolumn{1}{c|}{2}     & \multicolumn{1}{c|}{3}     & \multicolumn{1}{c|}{4}     & \multicolumn{1}{c|}{5}     & 6     & 平均值   \\ \hline
+    长度 d/mm & 230.0 & \multicolumn{5}{c|}{\diagbox[dir=NE]{ }{ }} & 230.0 \\ \hline
+    宽度 b/mm & 23.00 & \multicolumn{1}{c|}{22.96} & \multicolumn{1}{c|}{22.92} & \multicolumn{1}{c|}{22.94} & \multicolumn{1}{c|}{22.94} & 22.96 & 22.95 \\ \hline
+    厚度 a/mm & 0.968 & \multicolumn{1}{c|}{0.972} & \multicolumn{1}{c|}{0.971} & \multicolumn{1}{c|}{0.970} & \multicolumn{1}{c|}{0.972} & 0.969 & 0.970 \\ \hline
+    \end{tabular}
+    \caption{黄铜横梁的几何尺寸}
+\end{table}
+
+将黄铜样品安装在预先搭好的实验装置上开始测量，测量结果如下表所示。在测量开始时，显微镜的初始读数为$Z_0$=4.220mm。在实验中每次加力10g，用显微镜记录$Z_i$并记录仪器面板上的$U_i$读数。
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|cccc|c|}
+    \hline
+    序号i                                   & 1      & 2      & 3      & 4      & \multicolumn{1}{c|}{5}      & \multicolumn{1}{c|}{6}      & \multicolumn{1}{c|}{7}      & 8       & 平均值     \\ \hline
+    $M_i$\,/\,g                           & 10.0   & 20.1   & 30.0   & 39.9   & \multicolumn{1}{c|}{50.0}   & \multicolumn{1}{c|}{60.1}   & \multicolumn{1}{c|}{69.9}   & 80.1    & 45.0    \\ \hline
+    $Z_i$\,/\,mm                          & 4.350  & 4.460  & 4.580  & 4.705  & \multicolumn{1}{c|}{4.850}  & \multicolumn{1}{c|}{5.070}  & \multicolumn{1}{c|}{5.170}  & 5.280   & 4.808   \\ \hline
+    $U_i$\,/\,mV                          & 27     & 54     & 81     & 108    & \multicolumn{1}{c|}{133}    & \multicolumn{1}{c|}{160}    & \multicolumn{1}{c|}{183}    & 206     & 119     \\ \hline
+    $\Delta Z_i$\,/\,mm                   & 0.500  & 0.610  & 0.590   & 0.575  & \multicolumn{4}{c|}{\multirow{2}{*}{\diagbox[dir=NE]{}{}}}                                                            & 0.569   \\ \cline{1-5} \cline{10-10} 
+    $\Delta U_i$\,/\,mm                   & 106    & 106    & 102    & 98     & \multicolumn{4}{c|}{}                                                                             & 103     \\ \hline
+    $U_i^2$\,/\,mV$^2$                    & 729    & 2916   & 6561   & 11664  & \multicolumn{1}{c|}{17689}  & \multicolumn{1}{c|}{25600}  & \multicolumn{1}{c|}{33489}  & 42436   & 17635.5 \\ \hline
+    $Z_i^2$\,/\,mm$^2$                    & 18.92  & 19.89  & 20.98  & 22.14  & \multicolumn{1}{c|}{23.52}  & \multicolumn{1}{c|}{25.70}  & \multicolumn{1}{c|}{26.73}  & 27.88   & 23.22   \\ \hline
+    \makecell{$Z_iU_i$\,/ \\ (mm $\cdot$ mV)} & 117.45 & 240.84 & 370.98 & 508.14 & \multicolumn{1}{c|}{645.05} & \multicolumn{1}{c|}{811.20} & \multicolumn{1}{c|}{946.11} & 1087.68 & 590.93  \\ \hline
+    \end{tabular}
+    \caption{黄铜样品的测量结果}
+\end{table}
+
+\subsubsection{逐差法求杨氏模量}
+根据\ref{subsec:hallprinciple}中推导的公式
+\[
+    Y=\frac{d^3g}{4a^3b}\frac{\Delta M}{\Delta Z}
+\]
+可知，我们用逐差法求出$\Delta M=M_{i+4}-M_{i}$和$\Delta Z=Z_{i+4}-Z_{i}$，并对$\frac{\Delta M}{\Delta Z}$取平均值，即可用逐差法求出杨氏模量。
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        序号i & 1 & 2 & 3 & 4 & 平均值 \\
+        \hline
+        $\Delta M_i$\,/\,g & 40.0 & 40.0 & 39.9 & 40.2 & 40.0 \\
+        \hline
+        $\Delta Z_i$\,/\,mm & 0.500 & 0.610 & 0.590 & 0.575 & 0.569 \\
+        \hline
+        $\frac{\Delta M_i}{\Delta Z_i}$\,/\,$\mathrm{g\cdot mm^{-1}}$ & 80.0 & 65.6 & 67.6 & 69.9 & 70.8 \\
+        \hline
+    \end{tabular}
+    \caption{逐差法处理数据}
+\end{table}
+
+因此我们可以求出
+
+\[
+    Y=\frac{d^3g}{4a^3b}\frac{\Delta M}{\Delta Z}=1.01\times10^{11}\mathrm{N/m^2}
+\]
+
+实验测量结果与理论值$1.055\times10^{11}\mathrm{N/m^2}$的相对误差为4.27\%。
+
+\subsubsection{杨氏模量测量值的不确定度分析}\label{subsubsec:analysis1}
+\ref{subsec:hallprinciple}中推导的杨氏模量公式中不确定度可表示为：
+
+\[
+    E_Y=\frac{u(Y)}{Y}=\sqrt{\left(\frac{3u(d)}{d}\right)^2+\left(\frac{3u(a)}{a}\right)^2+\left(\frac{u(b)}{b}\right)^2+\left(\frac{u(\Delta Z)}{\Delta Z}\right)^2}
+\]
+
+其中由于$\Delta M$的仪器允差未知且$\Delta M$偏差不大，直接忽略这一项。其中：
+
+\[
+    u(d)=\sqrt{\left(\frac{d}{10}\right)^2+\frac{e^2}{3}}=0.07\,\mathrm{mm}
+\]
+
+\[
+    u(a)=\sqrt{\frac{\sum_{i=1}^{6}(a_i-\overline{a})^2}{6\times5}+\frac{e^2}{3}}=0.012\,\mathrm{mm}
+\]
+
+\[
+    u(b)=\sqrt{\frac{\sum_{i=1}^{6}(b_i-\overline{b})^2}{6\times5}+\frac{e^2}{3}}=0.017\,\mathrm{mm}
+\]
+
+\[
+    u(\Delta Z)=\sqrt{\frac{\sum_{i=1}^{4}(\Delta Z_i-\overline{\Delta Z})^2}{4\times3}+\frac{e^2}{3}}=0.022\,\mathrm{mm}
+\]
+
+带入可计算得
+
+\[
+    E_Y=\frac{u(Y)}{Y}=\sqrt{\left(\frac{3u(d)}{d}\right)^2+\left(\frac{3u(a)}{a}\right)^2+\left(\frac{u(b)}{b}\right)^2+\left(\frac{u(\Delta Z)}{\Delta Z}\right)^2}=0.0536
+\]
+
+即杨氏模量测量结果的不确定度为5.36\%。
+
+\subsubsection{作图法求传感器灵敏度}
+
+我们在坐标纸上手绘$U_i-Z_i$图像，如下图所示，解得斜率为$k=167.20\,\mathrm{mV/mm}$，即霍尔传感器的灵敏度为
+
+\[
+    \frac{\Delta U}{\Delta Z}=167.20\,\mathrm{mV/mm}
+\]
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[height=0.9\textwidth,angle=90]{1-5-1.jpg}
+    \caption{手绘的黄铜$U_i-Z_i$图像}
+\end{figure}
+
+同时我们用\verb|Python|中的\verb|scipy.optimize|包中的\verb|curve_fit()|方法对数据点进行线性拟合，并用\verb|matplotlib.pyplot|库绘图，结果如下：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1-5-2.png}
+    \caption{用Python绘制的黄铜$U_i-Z_i$图像}
+\end{figure}
+
+\subsubsection{最小二乘法求传感器灵敏度}
+传感器的灵敏度即为对于$U-Z$图像的斜率，故传感器的灵敏度可以通过最小二乘法求解。
+
+\[
+    \frac{\Delta U}{\Delta Z}=\dfrac{\sum_{i=1}^{8}Z_i \cdot U_i-8\overline{Z_i}\cdot\overline{U_i}}{\sum_{i=1}^{8}Z_i^2-8\overline{Z_i}^2}=182.08\mathrm{mV/mm}
+\]
+
+\subsection{样品为铸铁的情况}
+首先测量横梁的几何尺寸，结果如下表所示。注意长度是指两个支架之间的长度，而不是整个样品的长度。
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|ccccc|c|}
+    \hline
+    测量次数    & 1     & \multicolumn{1}{c|}{2}     & \multicolumn{1}{c|}{3}     & \multicolumn{1}{c|}{4}     & \multicolumn{1}{c|}{5}     & 6     & 平均值   \\ \hline
+    长度 d/mm & 230.0 & \multicolumn{5}{c|}{\diagbox[dir=NE]{ }{ }} & 230.0 \\ \hline
+    宽度 b/mm & 23.10 & \multicolumn{1}{c|}{23.06} & \multicolumn{1}{c|}{23.12} & \multicolumn{1}{c|}{23.06} & \multicolumn{1}{c|}{23.08} & 23.04 & 23.08 \\ \hline
+    厚度 a/mm & 0.975 & \multicolumn{1}{c|}{0.970} & \multicolumn{1}{c|}{0.978} & \multicolumn{1}{c|}{0.977} & \multicolumn{1}{c|}{0.973} & 0.972 & 0.974 \\ \hline
+    \end{tabular}
+    \caption{铸铁横梁的几何尺寸}
+\end{table}
+
+将黄铜样品安装在预先搭好的实验装置上开始测量，测量结果如下表所示。在测量开始时，显微镜的初始读数为$Z_0$=3.000mm。在实验中每次加力20g，用显微镜记录$Z_i$并记录仪器面板上的$U_i$读数。
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|cccc|c|}
+    \hline
+    序号i                                   & 1     & 2      & 3      & 4      & \multicolumn{1}{c|}{5}      & \multicolumn{1}{c|}{6}      & \multicolumn{1}{c|}{7}      & 8      & 平均值    \\ \hline
+    $M_i$\,/\,g                           & 20.0  & 40.0   & 60.0   & 80.0   & \multicolumn{1}{c|}{100.0}  & \multicolumn{1}{c|}{120.0}  & \multicolumn{1}{c|}{140.1}  & 160.0  & 90.0   \\ \hline
+    $Z_i$\,/\,mm                          & 3.080 & 3.200  & 3.330  & 3.440  & \multicolumn{1}{c|}{3.560}  & \multicolumn{1}{c|}{3.710}  & \multicolumn{1}{c|}{3.860}  & 4.050  & 3.529  \\ \hline
+    $U_i$\,/\,mV                          & 30    & 58     & 87     & 114    & \multicolumn{1}{c|}{141}    & \multicolumn{1}{c|}{168}    & \multicolumn{1}{c|}{195}    & 222    & 127    \\ \hline
+    $\Delta Z_i$\,/\,mm                   & 0.480 & 0.510  & 0.530  & 0.610  & \multicolumn{4}{c|}{\multirow{2}{*}{\diagbox[dir=NE]{}{}}}                                                           & 0.532  \\ \cline{1-5} \cline{10-10} 
+    $\Delta U_i$\,/\,mm                   & 111   & 110    & 108    & 108    & \multicolumn{4}{c|}{}                                                                            & 109    \\ \hline
+    $U_i^2$\,/\,mV$^2$                    & 900   & 3364   & 7569   & 12996  & \multicolumn{1}{c|}{19881}  & \multicolumn{1}{c|}{28224}  & \multicolumn{1}{c|}{38025}  & 49284  & 20030  \\ \hline
+    $Z_i^2$\,/\,mm$^2$                    & 9.486 & 10.24  & 11.09  & 11.83  & \multicolumn{1}{c|}{12.67}  & \multicolumn{1}{c|}{13.76}  & \multicolumn{1}{c|}{14.90}  & 16.40  & 12.55  \\ \hline
+    \makecell{$Z_iU_i$/ \\ \,($\mathrm{mm \cdot mV}$)} & 92.40 & 185.60 & 289.71 & 392.16 & \multicolumn{1}{c|}{501.96} & \multicolumn{1}{c|}{623.28} & \multicolumn{1}{c|}{752.70} & 899.10 & 467.11 \\ \hline
+    \end{tabular}
+    \caption{铸铁样品的几何尺寸}
+\end{table}
+
+\subsubsection{逐差法求杨氏模量}
+根据\ref{subsec:hallprinciple}中推导的公式
+\[
+    Y=\frac{d^3g}{4a^3b}\frac{\Delta M}{\Delta Z}
+\]
+可知，我们用逐差法求出$\Delta M=M_{i+4}-M_{i}$和$\Delta Z=Z_{i+4}-Z_{i}$，并对$\frac{\Delta M}{\Delta Z}$取平均值，即可用逐差法求出杨氏模量。事实上也可以将$\Delta M$直接记为$M=40\,\mathrm{g}$，不过这里还是考虑一下这一步调节中的偶然误差。
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        序号i & 1 & 2 & 3 & 4 & 平均值 \\
+        \hline
+        $\Delta M_i$\,/\,g & 80.0 & 80.0 & 80.1 & 80.0 & 80.0 \\
+        \hline
+        $\Delta Z_i$\,/\,mm & 0.480 & 0.510 & 0.530 & 0.610 & 0.532 \\
+        \hline
+        $\frac{\Delta M_i}{\Delta Z_i}$\,/\,$\mathrm{g\cdot mm^{-1}}$ & $1.67\times10^{2}$ & $1.56\times10^{2}$ & $1.51\times10^{2}$ & $1.31\times10^{2}$ & $1.51\times10^{2}$ \\
+        \hline
+    \end{tabular}
+    \caption{逐差法处理数据}
+\end{table}
+
+因此我们可以求出
+
+\[
+    Y=\frac{d^3g}{4a^3b}\frac{\Delta M}{\Delta Z}=2.10\times10^{11}\mathrm{N/m^2}
+\]
+
+实验测量结果与理论值$1.815\times10^{11}\mathrm{N/m^2}$的相对误差为15.70\%。
+
+\subsubsection{杨氏模量测量值的不确定度分析}\label{subsubsec:analysis2}
+
+\ref{subsec:hallprinciple}中推导的杨氏模量公式中不确定度可表示为：
+
+\[
+    E_Y=\frac{u(Y)}{Y}=\sqrt{\left(\frac{3u(d)}{d}\right)^2+\left(\frac{3u(a)}{a}\right)^2+\left(\frac{u(b)}{b}\right)^2+\left(\frac{u(\Delta Z)}{\Delta Z}\right)^2}
+\]
+
+其中由于$\Delta M$的仪器允差未知且$\Delta M$偏差不大，直接忽略这一项。其中：
+
+\[
+    u(d)=\sqrt{\left(\frac{d}{10}\right)^2+\frac{e^2}{3}}=0.07\,\mathrm{mm}
+\]
+
+\[
+    u(a)=\sqrt{\frac{\sum_{i=1}^{6}(a_i-\overline{a})^2}{6\times5}+\frac{e^2}{3}}=8.5\times10^{-3}\,\mathrm{mm}
+\]
+
+\[
+    u(b)=\sqrt{\frac{\sum_{i=1}^{6}(b_i-\overline{b})^2}{6\times5}+\frac{e^2}{3}}=0.016\,\mathrm{mm}
+\]
+
+\[
+    u(\Delta Z)=\sqrt{\frac{\sum_{i=1}^{4}(\Delta Z_i-\overline{\Delta Z})^2}{4\times3}+\frac{e^2}{3}}=0.028\,\mathrm{mm}
+\]
+
+带入可计算得
+
+\[
+    E_Y=\frac{u(Y)}{Y}=\sqrt{\left(\frac{3u(d)}{d}\right)^2+\left(\frac{3u(a)}{a}\right)^2+\left(\frac{u(b)}{b}\right)^2+\left(\frac{u(\Delta Z)}{\Delta Z}\right)^2}=0.0587
+\]
+
+即杨氏模量测量结果的不确定度为5.87\%。
+
+\subsubsection{作图法求传感器灵敏度}
+
+我们在坐标纸上手绘$U_i-Z_i$图像，如下图所示，解得斜率为$k=203.01\,\mathrm{mV/mm}$，即霍尔传感器的灵敏度为
+
+\[
+    \frac{\Delta U}{\Delta Z}=203.01\,\mathrm{mV/mm}
+\]
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[height=0.9\textwidth,angle=90]{1-5-3.jpg}
+    \caption{手绘的铸铁$U_i-Z_i$图像}
+\end{figure}
+
+同时我们用\verb|Python|中的\verb|scipy.optimize|包中的\verb|curve_fit()|方法对数据点进行线性拟合，并用\verb|matplotlib.pyplot|库绘图，结果如下：
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1-5-4.png}
+    \caption{用Python绘制的铸铁的$U_i-Z_i$图像}
+\end{figure}
+
+\subsubsection{最小二乘法法求传感器灵敏度}
+传感器的灵敏度即为对于$U-Z$图像的斜率，故传感器的灵敏度可以通过最小二乘法求解。
+
+\[
+    \frac{\Delta U}{\Delta Z}=\dfrac{\sum_{i=1}^{8}Z_i \cdot U_i-8\overline{Z_i}\cdot\overline{U_i}}{\sum_{i=1}^{8}Z_i^2-8\overline{Z_i}^2}=203.21\mathrm{mV/mm}
+\]
+
+\section{思考题}
+\begin{enumerate}
+    \item {\kaishu 弯曲法测杨氏模量实验，主要测量误差有哪些？请估算各因素的不确定度。}
+    
+    弯曲法测杨氏模量的原理公式为
+    \[
+        Y=\frac{d^3Mg}{4a^3b\Delta Z}
+    \]
+    因此可能的误差来源有：黄铜片的几何尺寸（厚度$ a $、宽度$ b $、长度$ d $）、加力系统示数的跳变等。前者的不确定度可以参见\ref{subsubsec:analysis1}和\ref{subsubsec:analysis2}。后者主要在读取加力大小$M$时的时候发生，通常等待示数稳定后读数，故而不确定度可认为为$ u(M)=0.1\,\mathrm g $（即分度值）。
+    \item {\kaishu 用霍尔位置传感器法测量位移有什么优点？}
+    
+    霍尔位置传感器在测量位移的灵敏度上较高，同时将位移信息转换为电信号进行测量，免去了估读等工作，精确度相对较高，简化了实验步骤。
+\end{enumerate}
+
+\section{实验总结}
+本实验难度并不大，虽然实验装置的搭建在讲义上描述得比较抽象，但课堂讲解还是能让我比较直观地理解装置搭建过程。加力虽然比较繁琐而且需要保证不调过头，但操作几次之后也就不难掌握了。而操作最麻烦的是显微镜，和预科实验中的CCD仪器都存在比较严重的晃动问题，待测的线很容易偏离水平方向，造成较大的误差。
+
+此外，本实验另一个主要的难点在于计算不确定度，我至少算了一节课才搞懂背后的逻辑和算法，而且也不能保证完全正确。由于物理课上从来没有介绍过这个概念，只有杨氏模量的两次实验用到了这个概念，故我对这个概念及其算法并不熟悉。
+
+此外，如果实验中不会做选做实验的话，个人建议优化一下讲义的结构和内容，删掉过量的选做实验相关内容，把霍尔法实验的装置图、流程和要求等写清楚，虽然正式实验并不复杂，但不得不说，这对我的预习造成了比较大的障碍。
+
+最后，本篇实验报告全部用\LaTeX{}排版，这里感谢21级计算机专业的吉骏雄同学和21级人工智能专业的林诚皓同学提供实验报告表头所用模板，也感谢16级物理系樊兆兴学长对于部分\LaTeX{}相关问题的解答！
+
+\end{document}
